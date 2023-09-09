@@ -1,8 +1,10 @@
-package com.swimmingcommunityapp.User.controller;
+package com.swimmingcommunityapp.user.controller;
 
-import com.swimmingcommunityapp.User.UserJoinRequest;
-import com.swimmingcommunityapp.User.UserJoinResponse;
-import com.swimmingcommunityapp.User.service.UserService;
+import com.swimmingcommunityapp.user.UserJoinRequest;
+import com.swimmingcommunityapp.user.UserJoinResponse;
+import com.swimmingcommunityapp.user.UserLoginRequest;
+import com.swimmingcommunityapp.user.UserLoginResponse;
+import com.swimmingcommunityapp.user.service.UserService;
 import com.swimmingcommunityapp.response.Response;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,5 +27,12 @@ public class UserRestController {
     @PostMapping("/join")
     public Response<UserJoinResponse> join(@RequestBody UserJoinRequest dto){
         return Response.success(userService.join(dto));
+    }
+
+    //로그인
+    @Operation(summary = "로그인", description = "로그인 시 token 발행")
+    @PostMapping("/login")
+    public Response<UserLoginResponse> login(@RequestBody UserLoginRequest dto){
+        return Response.success(userService.login(dto));
     }
 }

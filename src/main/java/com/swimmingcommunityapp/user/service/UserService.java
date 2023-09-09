@@ -1,12 +1,16 @@
-package com.swimmingcommunityapp.User.service;
+package com.swimmingcommunityapp.user.service;
 
-import com.swimmingcommunityapp.User.UserJoinRequest;
-import com.swimmingcommunityapp.User.UserJoinResponse;
-import com.swimmingcommunityapp.User.repository.UserRepository;
-import com.swimmingcommunityapp.User.entity.User;
+import com.swimmingcommunityapp.user.UserJoinRequest;
+import com.swimmingcommunityapp.user.UserJoinResponse;
+import com.swimmingcommunityapp.user.UserLoginRequest;
+import com.swimmingcommunityapp.user.UserLoginResponse;
+import com.swimmingcommunityapp.user.repository.UserRepository;
+import com.swimmingcommunityapp.user.entity.User;
 import com.swimmingcommunityapp.exception.AppException;
 import com.swimmingcommunityapp.exception.ErrorCode;
+import com.swimmingcommunityapp.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +20,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
 
-
+    @Value("${jwt.token.secret}")
+    private String key;
+    private Long expireTimeMs = 1000 * 60 * 300l;
     public UserJoinResponse join(UserJoinRequest dto) {
 
         //nickName 중복체크
@@ -44,4 +50,20 @@ public class UserService {
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
     }
 
+    public UserLoginResponse login(UserLoginRequest dto) {
+        //username 없음
+        User selectedUser = userRepository.findByUserName(dto.getUserName())
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        //password 틀림
+        if (!encoder.matches(dto.getPassword(), selectedUser.getPassword())) {
+            throw new AppException(ErrorCode.INVALID_PASSWORD);
+        }
+
+        //토큰 발행
+        String token = JwtTokenUtil.createToken(selectedUser.getUserName(), key, expireTimeMs);
+
+        return new UserLoginResponse(token,selectedUser.getId(),selectedUser.getUserName(),selectedUser.getNickName(),selectedUser.getPhoneNumber());
+
+    }
 }
