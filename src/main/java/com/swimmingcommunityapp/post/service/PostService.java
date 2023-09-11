@@ -3,15 +3,18 @@ package com.swimmingcommunityapp.post.service;
 import com.swimmingcommunityapp.category.CategoryRepository;
 import com.swimmingcommunityapp.exception.AppException;
 import com.swimmingcommunityapp.exception.ErrorCode;
-import com.swimmingcommunityapp.post.PostCreateRequest;
-import com.swimmingcommunityapp.post.PostCreateResponse;
+import com.swimmingcommunityapp.post.request.PostCreateRequest;
 import com.swimmingcommunityapp.post.PostDto;
 import com.swimmingcommunityapp.post.entity.Post;
 import com.swimmingcommunityapp.post.repository.PostRepository;
+import com.swimmingcommunityapp.post.response.PostDeleteResponse;
 import com.swimmingcommunityapp.user.entity.User;
 import com.swimmingcommunityapp.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +51,31 @@ public class PostService {
                 .createdAt(savedPost.getCreatedAt())
                 .lastModifiedAt(savedPost.getLastModifiedAt())
                 .build();
+    }
+
+    // 삭제
+    @Transactional
+    public PostDeleteResponse deletePost(Long postId, String userName) {
+        //postId 없을때 에러 처리
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
+
+        //userName 정보를 못찾을때 에러처리
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        //userName이 일치하지 않을때 에러 처리
+        if (!Objects.equals(post.getUser().getUserName(),userName)){
+            throw new AppException(ErrorCode.INVALID_PERMISSION);
+        }
+        //삭제
+        postRepository.delete(post);
+
+        return PostDeleteResponse.builder()
+                .postId(postId)
+                .userID(user.getId())
+                .build();
+
     }
 
 }

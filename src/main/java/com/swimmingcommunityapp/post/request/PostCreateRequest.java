@@ -1,4 +1,4 @@
-package com.swimmingcommunityapp.post;
+package com.swimmingcommunityapp.post.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
