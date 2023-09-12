@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 
@@ -41,6 +42,21 @@ public class PostDto {
                 .createdAt(post.getCreatedAt())
                 .lastModifiedAt(post.getLastModifiedAt())
                 .build();
+    }
+
+    public static Page<PostDto> toDto(Page<Post> post){
+        Page<PostDto> postDto = post.map(p -> PostDto.builder()
+                .postId(p.getId())
+                .userId(p.getUser().getId())
+                .category(p.getCategory().getName())
+                .title(p.getTitle())
+                .body(p.getBody())
+                .userName(p.getUser().getUserName())
+                .nickName(p.getUser().getNickName())
+                .createdAt(p.getCreatedAt())
+                .lastModifiedAt(p.getLastModifiedAt())
+                .build());
+        return postDto;
     }
 
 }

@@ -11,6 +11,10 @@ import com.swimmingcommunityapp.response.Response;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -55,4 +59,11 @@ public class PostRestController {
         return Response.success(new PostDetailResponse(postDto.getUserId(), postDto.getPostId(), postDto.getCategory(), postDto.getUserName(), postDto.getNickName(), postDto.getTitle(), postDto.getBody(),postDto.getCreatedAt(),postDto.getLastModifiedAt()));
     }
 
+    //게시물 전체 조회 (최신순, 10개마다 페이징처리)
+    @GetMapping
+    @Operation(summary = "게시글 전체 목록 조회", description = "게시물 목록 최신순으로 20개씩 조회")
+    public Response<Page<PostDto>> pageable(@PageableDefault(sort = "createdAt",size = 10,direction = Sort.Direction.DESC) Pageable pageable){
+        Page<PostDto> postDto = postService.pageList(pageable);
+        return Response.success(postDto);
+    }
 }

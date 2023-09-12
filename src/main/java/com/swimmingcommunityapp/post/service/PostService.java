@@ -12,6 +12,8 @@ import com.swimmingcommunityapp.post.response.PostDeleteResponse;
 import com.swimmingcommunityapp.user.entity.User;
 import com.swimmingcommunityapp.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -112,7 +114,7 @@ public class PostService {
                 .build();
     }
 
-
+    //게시글 상세 조회
     public PostDto detail(Long postId, String userName) {
 
         //postId 없을때 에러 처리
@@ -125,5 +127,12 @@ public class PostService {
 
         return PostDto.fromEntity(post);
 
+    }
+
+    //게시글 전체 조회
+    public Page<PostDto> pageList(Pageable pageable){
+        Page<Post>  post = postRepository.findAll(pageable);
+        Page<PostDto> postDto = PostDto.toDto(post);
+        return postDto;
     }
 }
