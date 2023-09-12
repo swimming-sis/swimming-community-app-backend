@@ -113,4 +113,17 @@ public class PostService {
     }
 
 
+    public PostDto detail(Long postId, String userName) {
+
+        //postId 없을때 에러 처리
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
+
+        //userName 정보를 못찾을때 에러처리
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        return PostDto.fromEntity(post);
+
+    }
 }

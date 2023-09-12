@@ -4,6 +4,7 @@ import com.swimmingcommunityapp.post.request.PostCreateRequest;
 import com.swimmingcommunityapp.post.request.PostModifyRequest;
 import com.swimmingcommunityapp.post.response.PostCreateResponse;
 import com.swimmingcommunityapp.post.response.PostDeleteResponse;
+import com.swimmingcommunityapp.post.response.PostDetailResponse;
 import com.swimmingcommunityapp.post.response.PostModifyResponse;
 import com.swimmingcommunityapp.post.service.PostService;
 import com.swimmingcommunityapp.response.Response;
@@ -46,5 +47,12 @@ public class PostRestController {
         return Response.success(response);
     }
 
+    //게시물 1개 조회
+    @GetMapping("/{postId}/detail")
+    @Operation(summary = "게시글 1개 조회", description = "게시물 클릭 후, 게시물 상세 내역 조회")
+    public Response<PostDetailResponse> detail(@PathVariable Long postId, @ApiIgnore Authentication authentication){
+        PostDto postDto = postService.detail(postId, authentication.getName());
+        return Response.success(new PostDetailResponse(postDto.getUserId(), postDto.getPostId(), postDto.getCategory(), postDto.getUserName(), postDto.getNickName(), postDto.getTitle(), postDto.getBody(),postDto.getCreatedAt(),postDto.getLastModifiedAt()));
+    }
 
 }
