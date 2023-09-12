@@ -3,10 +3,7 @@ package com.swimmingcommunityapp.post.entity;
 import com.swimmingcommunityapp.BaseEntity;
 import com.swimmingcommunityapp.category.Category;
 import com.swimmingcommunityapp.user.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -40,5 +37,12 @@ public class Post extends BaseEntity {
     private String body;
 
     private boolean deleted = false;
+
+
+    public void updatePost(String title, String body) {
+        this.title = title;
+        this.body = body;
+    }
+
 
 }
