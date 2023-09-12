@@ -74,4 +74,11 @@ public class PostRestController {
         Page<PostDto> postDto = postService.myPostList(pageable,authentication.getName());
         return Response.success(postDto);
     }
+
+    @GetMapping("/search")
+    @Operation(summary = "검색 기능", description = "제목을 기준으로 검색 기능")
+    public Response<Page<PostDto>> search(@PageableDefault(sort = "createdAt",size = 10,direction = Sort.Direction.DESC)Pageable pageable,@ApiIgnore Authentication authentication,String keyword){
+        Page<PostDto> postDto = postService.searchPost(pageable,authentication.getName(),keyword);
+        return Response.success(postDto);
+    }
 }

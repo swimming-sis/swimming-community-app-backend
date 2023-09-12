@@ -148,4 +148,16 @@ public class PostService {
         Page<PostDto> postDto = PostDto.toDto(post);
         return postDto;
     }
+
+    //검색 기능
+    public Page<PostDto> searchPost(Pageable pageable, String userName,String keyword) {
+
+        //userName 정보를 못찾을때 에러처리
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        Page<Post>  post = postRepository.findByTitleContaining(keyword,pageable);
+        Page<PostDto> postDto = PostDto.toDto(post);
+        return postDto;
+    }
 }
