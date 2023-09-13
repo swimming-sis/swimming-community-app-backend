@@ -36,6 +36,7 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private String body;
 
+    @Builder.Default
     private boolean deleted = false;
 
 
