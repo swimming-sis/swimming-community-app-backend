@@ -1,6 +1,7 @@
 package com.swimmingcommunityapp.post;
 
 import com.swimmingcommunityapp.category.Category;
+import com.swimmingcommunityapp.post.entity.Post;
 import com.swimmingcommunityapp.post.request.PostCreateRequest;
 import com.swimmingcommunityapp.post.request.PostModifyRequest;
 import com.swimmingcommunityapp.post.response.PostCreateResponse;
@@ -19,6 +20,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/posts")
@@ -84,11 +87,11 @@ public class PostRestController {
         return Response.success(postDto);
     }
 
-//    @GetMapping("/category")
-//    @Operation(summary = "카테고리별 게시물 목록 조회", description = "카테고리 별로 게시물을 조회할 수 있는 기능")
-//    public Response<Page<PostDto>> classify(@PageableDefault(sort = "createdAt",size = 10,direction = Sort.Direction.DESC)Pageable pageable, @ApiIgnore Authentication authentication, Category category){
-//        Page<PostDto> postDto = postService.classifyList(pageable,authentication.getName(),category);
-//        return Response.success(postDto);
-//    }
+    @GetMapping("/category")
+    @Operation(summary = "카테고리별 게시물 목록 조회", description = "카테고리 별로 게시물을 조회할 수 있는 기능")
+    public Response<List<Post>> classify(@ApiIgnore Authentication authentication, Category category){
+
+        return Response.success(postService.classifyList(authentication.getName(),category));
+    }
 
 }
