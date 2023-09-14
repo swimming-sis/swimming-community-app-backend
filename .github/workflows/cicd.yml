@@ -58,6 +58,6 @@ jobs:
           script_stop: true
           script: |
             sudo docker-compose -f $COMPOSE down --rmi all
-            sudo docker pull $/$APP:latest
-            sudo docker pull $/$NGINX:latest
+            sudo docker pull ${{secrets.DOCKER_USER}}/$APP:latest
+            sudo docker pull ${{secrets.DOCKER_USER}}/$NGINX:latest
             sudo docker-compose -f $COMPOSE up -d
