@@ -1,3 +1,4 @@
 [submodule "swimming-community-app-submodule"]
 	path = swimming-community-app-submodule
 	url = https://github.com/swimming-sis/swimming-community-app-submodule.git
+    branch = main
