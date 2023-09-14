@@ -1,5 +1,6 @@
 package com.swimmingcommunityapp.post;
 
+import com.swimmingcommunityapp.category.Category;
 import com.swimmingcommunityapp.post.request.PostCreateRequest;
 import com.swimmingcommunityapp.post.request.PostModifyRequest;
 import com.swimmingcommunityapp.post.response.PostCreateResponse;
@@ -75,10 +76,19 @@ public class PostRestController {
         return Response.success(postDto);
     }
 
+    // 검색 기능
     @GetMapping("/search")
     @Operation(summary = "검색 기능", description = "제목을 기준으로 검색 기능")
     public Response<Page<PostDto>> search(@PageableDefault(sort = "createdAt",size = 10,direction = Sort.Direction.DESC)Pageable pageable,@ApiIgnore Authentication authentication,String keyword){
         Page<PostDto> postDto = postService.searchPost(pageable,authentication.getName(),keyword);
         return Response.success(postDto);
     }
+
+//    @GetMapping("/category")
+//    @Operation(summary = "카테고리별 게시물 목록 조회", description = "카테고리 별로 게시물을 조회할 수 있는 기능")
+//    public Response<Page<PostDto>> classify(@PageableDefault(sort = "createdAt",size = 10,direction = Sort.Direction.DESC)Pageable pageable, @ApiIgnore Authentication authentication, Category category){
+//        Page<PostDto> postDto = postService.classifyList(pageable,authentication.getName(),category);
+//        return Response.success(postDto);
+//    }
+
 }

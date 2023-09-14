@@ -1,8 +1,8 @@
 package com.swimmingcommunityapp.configuration;
 
 
-import com.swimmingcommunityapp.User.entity.User;
-import com.swimmingcommunityapp.User.service.UserService;
+import com.swimmingcommunityapp.user.entity.User;
+import com.swimmingcommunityapp.user.service.UserService;
 import com.swimmingcommunityapp.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;

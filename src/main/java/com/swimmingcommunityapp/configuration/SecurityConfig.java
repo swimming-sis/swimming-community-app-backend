@@ -1,7 +1,7 @@
 package com.swimmingcommunityapp.configuration;
 
 
-import com.swimmingcommunityapp.User.service.UserService;
+import com.swimmingcommunityapp.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -31,6 +31,7 @@ public class SecurityConfig {
                 .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/api/v1/users/join","/api/v1/users/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/api/v1/**").authenticated()
                 .antMatchers(HttpMethod.GET,"/api/v1/posts/my").authenticated()
                 .and()
                 .sessionManagement()

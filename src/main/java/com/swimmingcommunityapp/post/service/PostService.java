@@ -1,5 +1,6 @@
 package com.swimmingcommunityapp.post.service;
 
+import com.swimmingcommunityapp.category.Category;
 import com.swimmingcommunityapp.category.CategoryRepository;
 import com.swimmingcommunityapp.exception.AppException;
 import com.swimmingcommunityapp.exception.ErrorCode;
@@ -160,4 +161,22 @@ public class PostService {
         Page<PostDto> postDto = PostDto.toDto(post);
         return postDto;
     }
+
+//    // 카테고리 별 리스트
+//    public Page<PostDto> classifyList(Pageable pageable, String userName, String categoryName) {
+//
+//        //userName 정보를 못찾을때 에러처리
+//        User user = userRepository.findByUserName(userName)
+//                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+//
+//        //카테고리를 찾을 수 없을 때 에러처리
+//        Category category= categoryRepository.findByName(categoryName)
+//                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
+//
+//
+//        Page<Post>  post = postRepository.findByCategory(category,pageable);
+//        Page<PostDto> postDto = PostDto.toDto(post);
+//        return postDto;
+//    }
+
 }
