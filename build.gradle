@@ -43,13 +43,18 @@ dependencies {
 		//swagger
 		implementation "io.springfox:springfox-boot-starter:3.0.0"
 		implementation "io.springfox:springfox-swagger-ui:3.0.0"
-
-		testImplementation 'com.h2database:h2'
 	}
 
 	tasks.named('test') {
 		useJUnitPlatform()
 	}
 
+	task copyPrivate(type: Copy) {
+		copy {
+			from './swimming-community-app-submodule'
+			include "application-dev.yml"
+			into 'src/main/resources'
+		}
+	}
 
 }
