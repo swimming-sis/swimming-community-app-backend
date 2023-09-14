@@ -38,21 +38,26 @@ jobs:
         env:
           NAME: ${{secrets.DOCKER_USER}}
           APP: swimming-community-app
+          NGINX: nginx
         run: |
           docker build -t $NAME/$APP -f ./Dockerfile .
+          docker build -t $NAME/$NGINX -f ./nginx/Dockerfile . 
           docker push $NAME/$APP:latest
+          docker push $NAME/$NGINX:latest
       - name: EC2 Docker Run
         uses: appleboy/ssh-action@master
         env:
           APP: "swimming-community-app"
+          NGINX: "nginx"
           COMPOSE: "/home/ubuntu/compose/docker-compose.yml"
         with:
           username: ubuntu
           host: ${{secrets.EC2_HOST}}
           key: ${{secrets.EC2_KEY}}
-          envs: APP, COMPOSE
+          envs: APP, NGINX, COMPOSE
           script_stop: true
           script: |
             sudo docker-compose -f $COMPOSE down --rmi all
-            sudo docker pull ${{secrets.DOCKER_USER}}/$APP:latest
+            sudo docker pull $/$APP:latest
+            sudo docker pull $/$NGINX:latest
             sudo docker-compose -f $COMPOSE up -d
