@@ -1,11 +1,10 @@
 package com.swimmingcommunityapp.post.service;
 
-import com.swimmingcommunityapp.category.Category;
 import com.swimmingcommunityapp.category.CategoryRepository;
 import com.swimmingcommunityapp.exception.AppException;
 import com.swimmingcommunityapp.exception.ErrorCode;
 import com.swimmingcommunityapp.post.request.PostCreateRequest;
-import com.swimmingcommunityapp.post.PostDto;
+import com.swimmingcommunityapp.post.response.PostDto;
 import com.swimmingcommunityapp.post.entity.Post;
 import com.swimmingcommunityapp.post.repository.PostRepository;
 import com.swimmingcommunityapp.post.request.PostModifyRequest;
@@ -18,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Objects;
 
 @Service

@@ -1,4 +1,4 @@
-package com.swimmingcommunityapp.post;
+package com.swimmingcommunityapp.post.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.swimmingcommunityapp.post.entity.Post;

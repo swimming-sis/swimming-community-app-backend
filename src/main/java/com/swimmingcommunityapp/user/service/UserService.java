@@ -1,9 +1,9 @@
 package com.swimmingcommunityapp.user.service;
 
-import com.swimmingcommunityapp.user.UserJoinRequest;
-import com.swimmingcommunityapp.user.UserJoinResponse;
-import com.swimmingcommunityapp.user.UserLoginRequest;
-import com.swimmingcommunityapp.user.UserLoginResponse;
+import com.swimmingcommunityapp.user.request.UserJoinRequest;
+import com.swimmingcommunityapp.user.response.UserJoinResponse;
+import com.swimmingcommunityapp.user.request.UserLoginRequest;
+import com.swimmingcommunityapp.user.response.UserLoginResponse;
 import com.swimmingcommunityapp.user.repository.UserRepository;
 import com.swimmingcommunityapp.user.entity.User;
 import com.swimmingcommunityapp.exception.AppException;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -71,30 +70,36 @@ public class UserService {
 
     }
 
-    public Boolean searchUserName(String userName) {
-
-        Optional<User> user = userRepository.findByUserName(userName);
-        if (user != null) {
-            return true;
-        } else return false;
-
-    }
-
-    public Boolean searchNickName(String nickName) {
-
-        Optional<User> user = userRepository.findByNickName(nickName);
-        if (user != null) {
-            return true;
-        } else return false;
+    public String searchUserName(String userName) {
+        //userName 중복체크
+        userRepository.findByUserName(userName)
+                .ifPresent(user -> {
+                    throw new AppException(ErrorCode.USERNAME_DUPLICATION);
+                });
+        return userName;
 
     }
 
-    public Boolean searchPhoneNumber(String phoneNumber) {
+    public String searchNickName(String nickName) {
 
-        Optional<User> user = userRepository.findByPhoneNumber(phoneNumber);
-        if (user != null) {
-            return true;
-        } else return false;
+        //nickName 중복체크
+        userRepository.findByNickName(nickName)
+                .ifPresent(user -> {
+                    throw new AppException(ErrorCode.NICKNAME_DUPLICATION);
+                });
 
+        return nickName;
+
+    }
+
+    public String searchPhoneNumber(String phoneNumber) {
+
+        //nickName 중복체크
+        userRepository.findByPhoneNumber(phoneNumber)
+                .ifPresent(user -> {
+                    throw new AppException(ErrorCode.NICKNAME_DUPLICATION);
+                });
+
+        return phoneNumber;
     }
 }

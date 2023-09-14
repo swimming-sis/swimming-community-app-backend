@@ -1,4 +1,4 @@
-package com.swimmingcommunityapp.user;
+package com.swimmingcommunityapp.user.request;
 
 import com.swimmingcommunityapp.user.entity.User;
 import lombok.AllArgsConstructor;

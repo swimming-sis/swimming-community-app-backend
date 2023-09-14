@@ -1,7 +1,6 @@
-package com.swimmingcommunityapp.post;
+package com.swimmingcommunityapp.post.controller;
 
-import com.swimmingcommunityapp.category.Category;
-import com.swimmingcommunityapp.post.entity.Post;
+import com.swimmingcommunityapp.post.response.PostDto;
 import com.swimmingcommunityapp.post.request.PostCreateRequest;
 import com.swimmingcommunityapp.post.request.PostModifyRequest;
 import com.swimmingcommunityapp.post.response.PostCreateResponse;
@@ -20,8 +19,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/posts")
