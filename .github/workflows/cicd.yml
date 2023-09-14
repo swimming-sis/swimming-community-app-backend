@@ -39,10 +39,8 @@ jobs:
           NAME: ${{secrets.DOCKER_USER}}
           APP: swimming-community-app
         run: |
-          docker build -t $NAME/$APP -f ./DockerFile .
-          docker build -t $NAME/$NGINX -f ./nginx/DockerFile .
+          docker build -t $NAME/$APP -f ./Dockerfile .
           docker push $NAME/$APP:latest
-          docker push $NAME/$NGINX:latest
       - name: EC2 Docker Run
         uses: appleboy/ssh-action@master
         env:
