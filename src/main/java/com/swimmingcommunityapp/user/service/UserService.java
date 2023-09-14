@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -23,6 +26,7 @@ public class UserService {
     @Value("${jwt.token.secret}")
     private String key;
     private Long expireTimeMs = 1000 * 60 * 300l;
+
     public UserJoinResponse join(UserJoinRequest dto) {
 
         //nickName 중복체크
@@ -40,7 +44,7 @@ public class UserService {
         String securityPassword = encoder.encode(dto.getPassword());
         User savedUser = userRepository.save(dto.toEntity(securityPassword));
 
-        return  new UserJoinResponse(savedUser.getId(),savedUser.getNickName(),savedUser.getUserName(), savedUser.getPhoneNumber());
+        return new UserJoinResponse(savedUser.getId(), savedUser.getNickName(), savedUser.getUserName(), savedUser.getPhoneNumber());
 
     }
 
@@ -63,7 +67,34 @@ public class UserService {
         //토큰 발행
         String token = JwtTokenUtil.createToken(selectedUser.getUserName(), key, expireTimeMs);
 
-        return new UserLoginResponse(token,selectedUser.getId(),selectedUser.getUserName(),selectedUser.getNickName(),selectedUser.getPhoneNumber());
+        return new UserLoginResponse(token, selectedUser.getId(), selectedUser.getUserName(), selectedUser.getNickName(), selectedUser.getPhoneNumber());
+
+    }
+
+    public Boolean searchUserName(String userName) {
+
+        Optional<User> user = userRepository.findByUserName(userName);
+        if (user != null) {
+            return true;
+        } else return false;
+
+    }
+
+    public Boolean searchNickName(String nickName) {
+
+        Optional<User> user = userRepository.findByNickName(nickName);
+        if (user != null) {
+            return true;
+        } else return false;
+
+    }
+
+    public Boolean searchPhoneNumber(String phoneNumber) {
+
+        Optional<User> user = userRepository.findByPhoneNumber(phoneNumber);
+        if (user != null) {
+            return true;
+        } else return false;
 
     }
 }
