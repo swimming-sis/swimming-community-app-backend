@@ -16,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Objects;
 
 @Service
@@ -161,14 +160,17 @@ public class PostService {
         return postDto;
     }
 
-//    // 카테고리 별 리스트
-//    public List<Post> classifyList(String userName, Category category) {
-//
-//        //userName 정보를 못찾을때 에러처리
-//        User user = userRepository.findByUserName(userName)
-//                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
-//
-//        return postRepository.findByCategory(category);
-//    }
+    // 카테고리 별 리스트
+    public Page<PostDto> classifyList(String userName, String categoryName,Pageable pageable) {
+
+        //userName 정보를 못찾을때 에러처리
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        Page<Post> post = postRepository.findByCategoryName(categoryName,pageable);
+
+        Page<PostDto> postDto = PostDto.toDto(post);
+        return postDto;
+    }
 
 }

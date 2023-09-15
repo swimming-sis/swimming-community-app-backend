@@ -20,6 +20,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/posts")
 @RequiredArgsConstructor
@@ -84,11 +86,11 @@ public class PostRestController {
         return Response.success(postDto);
     }
 
-//    @GetMapping("/category")
-//    @Operation(summary = "카테고리별 게시물 목록 조회", description = "카테고리 별로 게시물을 조회할 수 있는 기능")
-//    public Response<List<Post>> classify(@ApiIgnore Authentication authentication, Category category){
-//
-//        return Response.success(postService.classifyList(authentication.getName(),category));
-//    }
+    @GetMapping("/{categoryName}")
+    @Operation(summary = "카테고리별 게시물 목록 조회", description = "카테고리 별로 게시물을 조회할 수 있는 기능")
+    public Response<Page<PostDto>> classify(@ApiIgnore Authentication authentication,@PathVariable String categoryName,@PageableDefault(sort = "createdAt",size = 10,direction = Sort.Direction.DESC)Pageable pageable){
+        Page<PostDto> postDto = postService.classifyList(authentication.getName(),categoryName,pageable);
+        return Response.success(postDto);
+    }
 
 }
