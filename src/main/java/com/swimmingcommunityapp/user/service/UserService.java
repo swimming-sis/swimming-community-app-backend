@@ -70,36 +70,15 @@ public class UserService {
 
     }
 
-    public String searchUserName(String userName) {
-        //userName 중복체크
-        userRepository.findByUserName(userName)
-                .ifPresent(user -> {
-                    throw new AppException(ErrorCode.USERNAME_DUPLICATION);
-                });
-        return userName;
-
+    public Boolean searchUserName(String userName)  {
+        return userRepository.findByUserName(userName).isPresent();
     }
 
-    public String searchNickName(String nickName) {
-
-        //nickName 중복체크
-        userRepository.findByNickName(nickName)
-                .ifPresent(user -> {
-                    throw new AppException(ErrorCode.NICKNAME_DUPLICATION);
-                });
-
-        return nickName;
-
+    public Boolean searchNickName(String nickName) {
+        return userRepository.findByNickName(nickName).isPresent();
     }
 
-    public String searchPhoneNumber(String phoneNumber) {
-
-        //nickName 중복체크
-        userRepository.findByPhoneNumber(phoneNumber)
-                .ifPresent(user -> {
-                    throw new AppException(ErrorCode.NICKNAME_DUPLICATION);
-                });
-
-        return phoneNumber;
+    public Boolean searchPhoneNumber(String phoneNumber) {
+        return userRepository.findByPhoneNumber(phoneNumber).isPresent();
     }
 }

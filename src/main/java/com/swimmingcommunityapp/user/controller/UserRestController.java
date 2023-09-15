@@ -35,22 +35,22 @@ public class UserRestController {
 
     //userName 조회
     @Operation(summary = "아이디 조회", description = "아이디 입력시 가입된 사용자 확인 절차")
-    @GetMapping("/userName/{userName}")
-    public Response<String> searchUserName(@PathVariable String userName){
+    @GetMapping("/userName")
+    public Response<Boolean> searchUserName(@RequestParam String userName) {
         return Response.success(userService.searchUserName(userName));
     }
 
     //nickName 조회
     @Operation(summary = "닉네임 조회", description = "닉네임 입력시 가입된 사용자 확인 절차")
-    @GetMapping("/nickName/{nickName}")
-    public Response<String> searchNickName(@PathVariable String nickName){
+    @GetMapping("/nickName")
+    public Response<Boolean> searchNickName(@RequestParam String nickName){
         return Response.success(userService.searchNickName(nickName));
     }
 
     //phoneNumber 조회
     @Operation(summary = "핸드폰 번호 조회", description = "핸드폰번호 입력시 가입된 사용자 확인 절차")
-    @GetMapping("phoneNumber/{phoneNumber}")
-    public Response<String> searchPhoneNumber(@PathVariable String phoneNumber){
-        return Response.success(userService.searchNickName(phoneNumber));
+    @GetMapping("phoneNumber")
+    public Response<Boolean> searchPhoneNumber(@RequestParam String phoneNumber){
+        return Response.success(userService.searchPhoneNumber(phoneNumber));
     }
 }
