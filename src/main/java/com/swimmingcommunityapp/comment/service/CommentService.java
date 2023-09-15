@@ -128,4 +128,16 @@ public class CommentService {
         Page<CommentDto> commentDto = CommentDto.toDto(comment);
         return commentDto;
     }
+
+    //댓글 1개 조회
+    public CommentDto searchComment(String userName, Long commentId) {
+
+        //userName 정보를 못찾을때 에러처리
+        User foundUser = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new AppException(ErrorCode.COMMENT_NOT_FOUND));
+
+        return CommentDto.of(comment);
+    }
 }

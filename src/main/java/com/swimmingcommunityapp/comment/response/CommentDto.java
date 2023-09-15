@@ -29,8 +29,6 @@ public class CommentDto {
     private LocalDateTime lastModifiedAt;
 
 
-
-
     public static Page<CommentDto> toDto(Page<Comment> comment) {
         Page<CommentDto> commentDto = comment.map(c -> CommentDto.builder()
                 .userId(c.getUser().getId())
@@ -44,5 +42,18 @@ public class CommentDto {
                 .build());
         return commentDto;
 
+    }
+
+    public static CommentDto of(Comment c) {
+        return CommentDto.builder()
+                .userId(c.getUser().getId())
+                .postId(c.getPost().getId())
+                .commentId(c.getId())
+                .comment(c.getComment())
+                .userName(c.getUser().getUserName())
+                .nickName(c.getUser().getNickName())
+                .createdAt(c.getCreatedAt())
+                .lastModifiedAt(c.getLastModifiedAt())
+                .build();
     }
 }

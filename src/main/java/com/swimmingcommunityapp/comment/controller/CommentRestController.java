@@ -65,4 +65,11 @@ public class CommentRestController {
         Page<CommentDto> commentDto = commentService.myCommentList(pageable,authentication.getName());
         return Response.success(commentDto);
     }
+
+    //댓글 1개 조회
+    @GetMapping("/comments/{commentId}")
+    @Operation(summary = "댓글 1개 조회", description = "댓글 1개 조회")
+    public Response<CommentDto> searchComment (@ApiIgnore Authentication authentication,@PathVariable Long commentId){
+        return Response.success(commentService.searchComment(authentication.getName(), commentId));
+    }
 }
