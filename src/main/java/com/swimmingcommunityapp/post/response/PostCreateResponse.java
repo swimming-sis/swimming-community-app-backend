@@ -16,6 +16,7 @@ public class PostCreateResponse {
     private String nickName;
     private String title;
     private String body;
+    private Long likeCnt;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;

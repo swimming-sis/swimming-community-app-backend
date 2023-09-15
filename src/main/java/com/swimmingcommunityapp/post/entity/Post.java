@@ -3,8 +3,10 @@ package com.swimmingcommunityapp.post.entity;
 import com.swimmingcommunityapp.BaseEntity;
 import com.swimmingcommunityapp.category.Category;
 import com.swimmingcommunityapp.comment.entity.Comment;
+import com.swimmingcommunityapp.like.entity.Like;
 import com.swimmingcommunityapp.user.entity.User;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -40,15 +42,24 @@ public class Post extends BaseEntity {
     private String body;
 
     @Builder.Default
+    private Long likeCnt= 0L;
+
+    @Builder.Default
     private boolean deleted = false;
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Like> like = new ArrayList<>();
+
     public void updatePost(String title, String body) {
         this.title = title;
         this.body = body;
     }
 
-
+    public void updateLike(Long likeCnt,Long cnt) {
+        this.likeCnt = likeCnt + cnt;
+    }
 
 }

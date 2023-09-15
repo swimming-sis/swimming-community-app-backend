@@ -50,6 +50,7 @@ public class PostService {
                 .userName(savedPost.getUser().getUserName())
                 .title(savedPost.getTitle())
                 .body(savedPost.getBody())
+                .likeCnt(savedPost.getLikeCnt())
                 .createdAt(savedPost.getCreatedAt())
                 .lastModifiedAt(savedPost.getLastModifiedAt())
                 .build();
@@ -108,6 +109,7 @@ public class PostService {
                 .userName(savedPost.getUser().getUserName())
                 .title(savedPost.getTitle())
                 .body(savedPost.getBody())
+                .likeCnt(savedPost.getLikeCnt())
                 .createdAt(post.getCreatedAt())
                 .lastModifiedAt(savedPost.getLastModifiedAt())
                 .build();
