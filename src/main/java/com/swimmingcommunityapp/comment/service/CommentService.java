@@ -117,5 +117,15 @@ public class CommentService {
         return commentDto;
     }
 
+    //내 댓글 목록 조회
+    public Page<CommentDto> myCommentList(Pageable pageable, String userName) {
 
+        //userName 정보를 못찾을때 에러처리
+        User foundUser = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        Page<Comment>  comment = commentRepository.findByUserId(foundUser.getId(),pageable);
+        Page<CommentDto> commentDto = CommentDto.toDto(comment);
+        return commentDto;
+    }
 }

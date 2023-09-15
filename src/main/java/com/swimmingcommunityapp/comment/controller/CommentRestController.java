@@ -6,6 +6,7 @@ import com.swimmingcommunityapp.comment.response.CommentDeleteResponse;
 import com.swimmingcommunityapp.comment.response.CommentDto;
 import com.swimmingcommunityapp.comment.response.CommentModifyResponse;
 import com.swimmingcommunityapp.comment.service.CommentService;
+import com.swimmingcommunityapp.post.response.PostDto;
 import com.swimmingcommunityapp.response.Response;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,6 +55,14 @@ public class CommentRestController {
     @Operation(summary = "게시물 댓글 목록 조회", description = "로그인 후, 게시물 댓글 목록 조회")
     public Response<Page<CommentDto>> pageable(@PageableDefault(sort = "createdAt",size = 10,direction = Sort.Direction.DESC) Pageable pageable,@PathVariable Long postId){
         Page<CommentDto> commentDto = commentService.pageList(pageable,postId);
+        return Response.success(commentDto);
+    }
+
+    //내 댓글 목록 조회
+    @GetMapping("/comments/my")
+    @Operation(summary = "내 게시물 목록 조회", description = "내 게시물만 보기")
+    public Response<Page<CommentDto>> myCommentList(@PageableDefault(sort = "createdAt",size = 10,direction = Sort.Direction.DESC)Pageable pageable, @ApiIgnore Authentication authentication){
+        Page<CommentDto> commentDto = commentService.myCommentList(pageable,authentication.getName());
         return Response.success(commentDto);
     }
 }
