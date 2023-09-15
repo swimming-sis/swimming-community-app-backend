@@ -5,6 +5,7 @@ import com.swimmingcommunityapp.comment.repository.CommentRepository;
 import com.swimmingcommunityapp.comment.request.CommentRequest;
 import com.swimmingcommunityapp.comment.response.CommentCreateResponse;
 import com.swimmingcommunityapp.comment.response.CommentDeleteResponse;
+import com.swimmingcommunityapp.comment.response.CommentDto;
 import com.swimmingcommunityapp.comment.response.CommentModifyResponse;
 import com.swimmingcommunityapp.exception.AppException;
 import com.swimmingcommunityapp.exception.ErrorCode;
@@ -14,6 +15,8 @@ import com.swimmingcommunityapp.user.entity.User;
 import com.swimmingcommunityapp.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -106,4 +109,13 @@ public class CommentService {
 
         return CommentModifyResponse.of(savedComment);
     }
+
+    //게시물 댓글 목록 조회
+    public Page<CommentDto> pageList(Pageable pageable,Long postId){
+        Page<Comment>  comment = commentRepository.findByPostId(postId,pageable);
+        Page<CommentDto> commentDto = CommentDto.toDto(comment);
+        return commentDto;
+    }
+
+
 }
