@@ -3,6 +3,7 @@ package com.swimmingcommunityapp.comment.controller;
 import com.swimmingcommunityapp.comment.request.CommentRequest;
 import com.swimmingcommunityapp.comment.response.CommentCreateResponse;
 import com.swimmingcommunityapp.comment.response.CommentDeleteResponse;
+import com.swimmingcommunityapp.comment.response.CommentModifyResponse;
 import com.swimmingcommunityapp.comment.service.CommentService;
 import com.swimmingcommunityapp.response.Response;
 import io.swagger.annotations.Api;
@@ -36,5 +37,11 @@ public class CommentRestController {
         return Response.success(commentService.deleteComment(postsId, commentId, authentication.getName()));
     }
 
+    //댓글 수정
+    @PutMapping("/{postId}/comments/{commentId}")
+    @Operation(summary = "댓글 수정", description = "로그인 후, 댓글 수정")
+    public Response<CommentModifyResponse> modify(@RequestBody CommentRequest dto, @PathVariable Long postId, @PathVariable Long commentId, @ApiIgnore Authentication authentication){
+        return Response.success(commentService.modifyComment(dto, postId, commentId,authentication.getName()));
+    }
 
 }
