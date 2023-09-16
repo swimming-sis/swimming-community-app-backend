@@ -44,4 +44,18 @@ public class SwimmingPoolService {
 
         swimmingPoolRepository.save(swimmingPool);
     }
+
+    public SwimmngPoolResponse detailSwimmingPool(Long uniqueNumber, String userName) {
+
+        //userName 못찾을때 에러
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        //수영장 데이터 못찾을때 에러
+        SwimmingPool swimmingPool = swimmingPoolRepository.findByUniqueNumber(uniqueNumber)
+                .orElseThrow(() -> new AppException(ErrorCode.SWIMMINGPOOL_NOT_FOUND));
+
+
+        return SwimmngPoolResponse.fromEntity(swimmingPool);
+    }
 }

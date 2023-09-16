@@ -8,10 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
@@ -30,6 +27,12 @@ public class SwimmingPoolRestController {
         return Response.success();
     }
 
+    //수영장 조회
+    @GetMapping("/{uniqueNumber}")
+    @Operation(summary = "수영장 조회", description = "수영장 정보 조회")
+    public Response<SwimmngPoolResponse> detail(@PathVariable Long uniqueNumber, @ApiIgnore Authentication authentication){
+        return Response.success(swimmingPoolService.detailSwimmingPool(uniqueNumber, authentication.getName()));
+    }
 
 
 
