@@ -44,7 +44,7 @@ public class CommentRestController {
     }
 
     //댓글 수정
-    @PutMapping("/{postId}/comments/{commentId}")
+    @PutMapping("/{postId}/comments/{commentId}/modify")
     @Operation(summary = "댓글 수정", description = "로그인 후, 댓글 수정")
     public Response<CommentModifyResponse> modify(@RequestBody CommentRequest dto, @PathVariable Long postId, @PathVariable Long commentId, @ApiIgnore Authentication authentication){
         return Response.success(commentService.modifyComment(dto, postId, commentId,authentication.getName()));

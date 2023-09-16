@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
     NICKNAME_DUPLICATION(HttpStatus.CONFLICT,"닉네임이 중복됩니다."),
     USERNAME_DUPLICATION(HttpStatus.CONFLICT,"아이디가 중복됩니다."),
+    SWIMMINGPOOL_DUPLICATION(HttpStatus.CONFLICT,"수영장 데이터가 중복됩니다."),
     NICKNAME_NOT_FOUND(HttpStatus.NOT_FOUND,"존재하지 않는 닉네임입니다."),
     USERNAME_NOT_FOUND(HttpStatus.NOT_FOUND,"존재하지 않는 아이디입니다."),
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND,"존재하지 않는 카테고리입니다."),
