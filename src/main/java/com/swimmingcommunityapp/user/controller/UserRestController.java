@@ -1,6 +1,7 @@
 package com.swimmingcommunityapp.user.controller;
 
 import com.swimmingcommunityapp.user.request.UserJoinRequest;
+import com.swimmingcommunityapp.user.response.UserDto;
 import com.swimmingcommunityapp.user.response.UserJoinResponse;
 import com.swimmingcommunityapp.user.request.UserLoginRequest;
 import com.swimmingcommunityapp.user.response.UserLoginResponse;
@@ -10,6 +11,8 @@ import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
+import org.springframework.security.core.Authentication;
 
 @RestController
 @RequestMapping("api/v1/users")
@@ -52,5 +55,12 @@ public class UserRestController {
     @GetMapping("phoneNumber")
     public Response<Boolean> searchPhoneNumber(@RequestParam String phoneNumber){
         return Response.success(userService.searchPhoneNumber(phoneNumber));
+    }
+
+    //계정 정보 조회
+    @GetMapping
+    @Operation(summary = "내 계정 조회", description = "내 계정 정보 조회 하기")
+    public Response<UserDto> detail(@ApiIgnore Authentication authentication){
+        return Response.success(userService.detailUser(authentication.getName()));
     }
 }

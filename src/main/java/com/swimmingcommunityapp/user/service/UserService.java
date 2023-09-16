@@ -1,6 +1,7 @@
 package com.swimmingcommunityapp.user.service;
 
 import com.swimmingcommunityapp.user.request.UserJoinRequest;
+import com.swimmingcommunityapp.user.response.UserDto;
 import com.swimmingcommunityapp.user.response.UserJoinResponse;
 import com.swimmingcommunityapp.user.request.UserLoginRequest;
 import com.swimmingcommunityapp.user.response.UserLoginResponse;
@@ -80,5 +81,14 @@ public class UserService {
 
     public Boolean searchPhoneNumber(String phoneNumber) {
         return userRepository.findByPhoneNumber(phoneNumber).isPresent();
+    }
+
+    public UserDto detailUser(String userName) {
+        //username 없음
+        User selectedUser = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+
+        return UserDto.detailUser(selectedUser);
     }
 }
