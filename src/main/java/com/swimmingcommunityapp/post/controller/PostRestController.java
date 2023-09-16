@@ -33,7 +33,7 @@ public class PostRestController {
     @Operation(summary = "게시물 작성", description = "로그인 후, 게시물 등록")
     public Response<PostCreateResponse> create(@RequestBody PostCreateRequest dto, @ApiIgnore Authentication authentication) {
         PostDto postDto = postService.createPost(dto, authentication.getName());
-        PostCreateResponse response = new PostCreateResponse(postDto.getUserId(), postDto.getPostId(), postDto.getCategory(), postDto.getUserName(), postDto.getNickName(), postDto.getTitle(), postDto.getBody(), postDto.getLikeCnt(), postDto.getCreatedAt(),postDto.getLastModifiedAt());
+        PostCreateResponse response = new PostCreateResponse(postDto.getUserId(), postDto.getPostId(), postDto.getCategory(), postDto.getUserName(), postDto.getNickName(), postDto.getTitle(), postDto.getBody(), postDto.getLikeCnt(), postDto.getCommentCnt(), postDto.getCreatedAt(),postDto.getLastModifiedAt());
         return Response.success(response);
     }
 
@@ -49,7 +49,7 @@ public class PostRestController {
     @Operation(summary = "게시물 수정", description = "로그인 후, 자신이 작성한 게시물만 수정 가능")
     public Response<PostModifyResponse> modify(@RequestBody PostModifyRequest dto, @PathVariable Long postId, @ApiIgnore Authentication authentication) {
         PostDto postDto = postService.modifyPost(dto,postId, authentication.getName());
-        PostModifyResponse response = new PostModifyResponse(postDto.getUserId(), postDto.getPostId(), postDto.getCategory(), postDto.getUserName(), postDto.getNickName(), postDto.getTitle(), postDto.getBody(), postDto.getLikeCnt(),postDto.getCreatedAt(),postDto.getLastModifiedAt());
+        PostModifyResponse response = new PostModifyResponse(postDto.getUserId(), postDto.getPostId(), postDto.getCategory(), postDto.getUserName(), postDto.getNickName(), postDto.getTitle(), postDto.getBody(), postDto.getLikeCnt(), postDto.getCommentCnt(),postDto.getCreatedAt(),postDto.getLastModifiedAt());
         return Response.success(response);
     }
 
@@ -58,7 +58,7 @@ public class PostRestController {
     @Operation(summary = "게시글 1개 조회", description = "게시물 클릭 후, 게시물 상세 내역 조회")
     public Response<PostDetailResponse> detail(@PathVariable Long postId, @ApiIgnore Authentication authentication){
         PostDto postDto = postService.detail(postId, authentication.getName());
-        return Response.success(new PostDetailResponse(postDto.getUserId(), postDto.getPostId(), postDto.getCategory(), postDto.getUserName(), postDto.getNickName(), postDto.getTitle(), postDto.getBody(), postDto.getLikeCnt(),postDto.getCreatedAt(),postDto.getLastModifiedAt()));
+        return Response.success(new PostDetailResponse(postDto.getUserId(), postDto.getPostId(), postDto.getCategory(), postDto.getUserName(), postDto.getNickName(), postDto.getTitle(), postDto.getBody(), postDto.getLikeCnt(), postDto.getCommentCnt(),postDto.getCreatedAt(),postDto.getLastModifiedAt()));
     }
 
     //게시물 전체 조회 (최신순, 10개마다 페이징처리)

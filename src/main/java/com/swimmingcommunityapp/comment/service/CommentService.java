@@ -50,6 +50,8 @@ public class CommentService {
 
         Comment savedComment = commentRepository.save(comment);
 
+        updateCommentCnt(postId,1l);
+
         return CommentCreateResponse.of(savedComment);
     }
 
@@ -75,6 +77,8 @@ public class CommentService {
 
         //삭제
         commentRepository.delete(foundComment);
+
+        updateCommentCnt(postId,-1l);
 
         return CommentDeleteResponse.builder()
                 .postId(postId)
@@ -139,5 +143,25 @@ public class CommentService {
                 .orElseThrow(() -> new AppException(ErrorCode.COMMENT_NOT_FOUND));
 
         return CommentDto.of(comment);
+    }
+
+    public void updateLikeCnt(Long postId, Long cnt) {
+        Post foundPost = postRepository.findById(postId)
+                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
+
+        foundPost.updateLike(foundPost.getLikeCnt(),cnt);
+
+        postRepository.save(foundPost);
+
+    }
+
+    public void updateCommentCnt(Long postId, Long cnt) {
+        Post foundPost = postRepository.findById(postId)
+                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
+
+        foundPost.updateCommentCnt(foundPost.getCommentCnt(),cnt);
+
+        postRepository.save(foundPost);
+
     }
 }

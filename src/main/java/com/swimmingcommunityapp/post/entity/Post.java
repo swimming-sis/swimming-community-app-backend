@@ -45,6 +45,9 @@ public class Post extends BaseEntity {
     private Long likeCnt= 0L;
 
     @Builder.Default
+    private Long commentCnt= 0L;
+
+    @Builder.Default
     private boolean deleted = false;
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -60,6 +63,8 @@ public class Post extends BaseEntity {
 
     public void updateLike(Long likeCnt,Long cnt) {
         this.likeCnt = likeCnt + cnt;
+    }public void updateCommentCnt(Long commentCnt,Long cnt) {
+        this.commentCnt = commentCnt + cnt;
     }
 
 }

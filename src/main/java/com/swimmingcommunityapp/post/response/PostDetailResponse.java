@@ -17,6 +17,7 @@ public class PostDetailResponse {
     private String title;
     private String body;
     private Long likeCnt;
+    private Long commentCnt;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;

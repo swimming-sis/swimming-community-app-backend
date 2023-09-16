@@ -51,6 +51,7 @@ public class PostService {
                 .title(savedPost.getTitle())
                 .body(savedPost.getBody())
                 .likeCnt(savedPost.getLikeCnt())
+                .commentCnt(savedPost.getCommentCnt())
                 .createdAt(savedPost.getCreatedAt())
                 .lastModifiedAt(savedPost.getLastModifiedAt())
                 .build();
@@ -110,6 +111,7 @@ public class PostService {
                 .title(savedPost.getTitle())
                 .body(savedPost.getBody())
                 .likeCnt(savedPost.getLikeCnt())
+                .commentCnt(savedPost.getCommentCnt())
                 .createdAt(post.getCreatedAt())
                 .lastModifiedAt(savedPost.getLastModifiedAt())
                 .build();

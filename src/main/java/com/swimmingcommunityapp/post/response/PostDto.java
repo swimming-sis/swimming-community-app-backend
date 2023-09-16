@@ -23,6 +23,7 @@ public class PostDto {
     private String userName;
     private String nickName;
     private Long likeCnt;
+    private Long commentCnt;
 
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
@@ -41,6 +42,7 @@ public class PostDto {
                 .userName(post.getUser().getUserName())
                 .nickName(post.getUser().getNickName())
                 .likeCnt(post.getLikeCnt())
+                .commentCnt(post.getCommentCnt())
                 .createdAt(post.getCreatedAt())
                 .lastModifiedAt(post.getLastModifiedAt())
                 .build();
@@ -56,6 +58,7 @@ public class PostDto {
                 .userName(p.getUser().getUserName())
                 .nickName(p.getUser().getNickName())
                 .likeCnt(p.getLikeCnt())
+                .commentCnt(p.getCommentCnt())
                 .createdAt(p.getCreatedAt())
                 .lastModifiedAt(p.getLastModifiedAt())
                 .build());
