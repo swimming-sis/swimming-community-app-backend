@@ -1,14 +1,15 @@
 package com.swimmingcommunityapp.review;
 
-import com.swimmingcommunityapp.comment.request.CommentRequest;
-import com.swimmingcommunityapp.comment.response.CommentCreateResponse;
 import com.swimmingcommunityapp.comment.response.CommentDto;
-import com.swimmingcommunityapp.comment.service.CommentService;
 import com.swimmingcommunityapp.response.Response;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -48,6 +49,14 @@ public class ReviewRestController {
     @Operation(summary = "리뷰 1개 조회", description = "로그인 후, 수영장 리뷰 1개 조회")
     public Response<ReviewDto> searchReview (@ApiIgnore Authentication authentication, @PathVariable Long swimmingPoolId, @PathVariable Long reviewId){
         return Response.success(reviewService.searchReview(authentication.getName(), swimmingPoolId, reviewId));
+    }
+
+    //수영장 별 리뷰 리스트 조회
+    @GetMapping("/{swimmingPoolId}/reviews/")
+    @Operation(summary = "수영장 별 리뷰 리스트 조회", description = "로그인 후, 수영장의 전체 리뷰 리스트")
+    public Response<Page<ReviewDto>> pageable(@PageableDefault(sort = "createdAt",size = 10,direction = Sort.Direction.DESC) Pageable pageable, @PathVariable Long swimmingPoolId,@ApiIgnore Authentication authentication){
+        Page<ReviewDto> reviewDto = reviewService.pageList(pageable,swimmingPoolId,authentication.getName());
+        return Response.success(reviewDto);
     }
 
 }
