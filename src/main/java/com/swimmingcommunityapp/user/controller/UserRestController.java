@@ -55,7 +55,7 @@ public class UserRestController {
 
     //phoneNumber 조회
     @Operation(summary = "핸드폰 번호 조회", description = "핸드폰번호 입력시 가입된 사용자 확인 절차")
-    @GetMapping("phoneNumber")
+    @GetMapping("/phoneNumber")
     public Response<Boolean> searchPhoneNumber(@RequestParam String phoneNumber){
         return Response.success(userService.searchPhoneNumber(phoneNumber));
     }
@@ -68,7 +68,7 @@ public class UserRestController {
     }
 
     //계정 정보 수정
-    @PutMapping("modify")
+    @PutMapping("/modify")
     @Operation(summary = "내 계정 수정", description = "내 계정 정보  수정하기")
     public Response<UserDto> modify(@RequestBody UserModifyRequest dto, @ApiIgnore Authentication authentication){
         return Response.success(userService.modifyUser(dto, authentication.getName()));
