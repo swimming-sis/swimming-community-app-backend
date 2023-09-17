@@ -2,6 +2,7 @@ package com.swimmingcommunityapp.review;
 
 import com.swimmingcommunityapp.comment.request.CommentRequest;
 import com.swimmingcommunityapp.comment.response.CommentCreateResponse;
+import com.swimmingcommunityapp.comment.response.CommentDto;
 import com.swimmingcommunityapp.comment.service.CommentService;
 import com.swimmingcommunityapp.response.Response;
 import io.swagger.annotations.Api;
@@ -16,7 +17,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequestMapping("/api/v1/swimmingPools")
 @RequiredArgsConstructor
 @Slf4j
-@Api(tags = "4. 리뷰")
+@Api(tags = "6. 리뷰")
 public class ReviewRestController {
 
     private final ReviewService reviewService;
@@ -41,4 +42,12 @@ public class ReviewRestController {
     public Response<ReviewDto> modify(@RequestBody ReviewRequest dto, @PathVariable Long swimmingPoolId, @PathVariable Long reviewId, @ApiIgnore Authentication authentication){
         return Response.success(reviewService.modifyReview(dto,swimmingPoolId,reviewId,authentication.getName()));
     }
+
+    //리뷰 1개 조회 기능
+    @GetMapping("/{swimmingPoolId}/reviews/{reviewId}")
+    @Operation(summary = "리뷰 1개 조회", description = "로그인 후, 수영장 리뷰 1개 조회")
+    public Response<ReviewDto> searchReview (@ApiIgnore Authentication authentication, @PathVariable Long swimmingPoolId, @PathVariable Long reviewId){
+        return Response.success(reviewService.searchReview(authentication.getName(), swimmingPoolId, reviewId));
+    }
+
 }

@@ -14,7 +14,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 @RequestMapping("/api/v1/swimmingPools")
 @RequiredArgsConstructor
-@Api(tags = "3. 수영장")
+@Api(tags = "5. 수영장")
 public class SwimmingPoolRestController {
 
     private final SwimmingPoolService swimmingPoolService;

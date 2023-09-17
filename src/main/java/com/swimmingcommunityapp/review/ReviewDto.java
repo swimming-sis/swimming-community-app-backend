@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 public class ReviewDto {
     private Long reviewId;
     private Long userId;
+    private String nickName;
     private Long swimmingPoolId;
     private String contents;
 
@@ -28,10 +30,26 @@ public class ReviewDto {
         return ReviewDto.builder()
                 .reviewId(review.getId())
                 .userId(review.getUser().getId())
+                .nickName(review.getUser().getNickName())
                 .swimmingPoolId(review.getSwimmingPool().getUniqueNumber())
                 .contents(review.getContents())
                 .createdAt(review.getCreatedAt())
                 .lastModifiedAt(review.getLastModifiedAt())
                 .build();
     }
+
+
+    public static Page<ReviewDto> toDto(Page<Review> review){
+        Page<ReviewDto> reviewDto = review.map(r -> ReviewDto.builder()
+                .reviewId(r.getId())
+                .userId(r.getUser().getId())
+                .nickName(r.getUser().getNickName())
+                .swimmingPoolId(r.getSwimmingPool().getId())
+                .contents(r.getContents())
+                .createdAt(r.getCreatedAt())
+                .lastModifiedAt(r.getLastModifiedAt())
+                .build());
+        return reviewDto;
+    }
+
 }
