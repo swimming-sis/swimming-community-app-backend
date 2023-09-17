@@ -20,11 +20,19 @@ import springfox.documentation.annotations.ApiIgnore;
 public class ReviewRestController {
 
     private final ReviewService reviewService;
-    // 리뷰작성
+
+    // 리뷰 작성
     @PostMapping("/{swimmingPoolId}/reviews/write")
     @Operation(summary = "리뷰 작성", description = "로그인 후, 수영장 리뷰 작성")
     public Response<ReviewDto> create(@RequestBody ReviewRequest dto, @PathVariable Long swimmingPoolId, @ApiIgnore Authentication authentication){
         return Response.success(reviewService.createReview(dto, swimmingPoolId, authentication.getName()));
+    }
+
+    //리뷰 삭제
+    @DeleteMapping("/{swimmingPoolId}/reviews/{reviewId}/delete")
+    @Operation(summary = "리뷰 삭제", description = "로그인 후, 수영장 리뷰 삭제")
+    public Response<Boolean> delete(@PathVariable Long swimmingPoolId, @PathVariable Long reviewId,@ApiIgnore Authentication authentication){
+        return Response.success(reviewService.deleteReview(swimmingPoolId, reviewId, authentication.getName()));
     }
 
 }

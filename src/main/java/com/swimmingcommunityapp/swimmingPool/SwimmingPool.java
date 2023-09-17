@@ -18,7 +18,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @Where(clause = "deleted = false")
-@SQLDelete(sql = "UPDATE post SET deleted = true WHERE swimming_pool_id = ?")
+@SQLDelete(sql = "UPDATE swimming_pool SET deleted = true WHERE swimming_pool_id = ?")
 public class SwimmingPool {
 
     @Id

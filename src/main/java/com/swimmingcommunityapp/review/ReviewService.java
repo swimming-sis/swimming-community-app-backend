@@ -37,4 +37,20 @@ public class ReviewService {
        Review savedReview = reviewRepository.save(review);
         return ReviewDto.of(savedReview);
     }
+
+    public Boolean deleteReview(Long swimmingPoolId, Long reviewId, String userName) {
+        //userName 정보를 못찾을때 에러처리
+        User foundUser = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+        //수영장 정보를 못찾을때 에러처리
+        SwimmingPool swimmingPool = swimmingPoolRepository.findByUniqueNumber(swimmingPoolId)
+                .orElseThrow(() -> new AppException(ErrorCode.SWIMMINGPOOL_NOT_FOUND));
+
+        //리뷰 정보를 못찾을때 에러처리
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new AppException(ErrorCode.REVIEW_NOT_FOUND));
+
+        reviewRepository.delete(review);
+        return true;
+    }
 }

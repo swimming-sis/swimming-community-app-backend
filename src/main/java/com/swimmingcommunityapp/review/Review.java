@@ -18,7 +18,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Where(clause = "deleted = false")
-@SQLDelete(sql = "UPDATE post SET deleted = true WHERE review_id = ?")
+@SQLDelete(sql = "UPDATE review SET deleted = true WHERE review_id = ?")
 @Entity
 public class Review extends BaseEntity {
     @Id

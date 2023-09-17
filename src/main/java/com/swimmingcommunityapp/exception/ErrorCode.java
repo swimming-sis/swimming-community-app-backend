@@ -15,6 +15,7 @@ public enum ErrorCode {
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND,"존재하지 않는 카테고리입니다."),
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND,"존재하지 않는 댓글입니다."),
     SWIMMINGPOOL_NOT_FOUND(HttpStatus.NOT_FOUND,"존재하지 않는 수영장 데이터입니다."),
+    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND,"존재하지 않는 리뷰입니다."),
 
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED,"패스워드가 잘못되었습니다."),
 
