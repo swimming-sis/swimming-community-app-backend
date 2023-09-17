@@ -73,4 +73,12 @@ public class UserRestController {
     public Response<UserDto> modify(@RequestBody UserModifyRequest dto, @ApiIgnore Authentication authentication){
         return Response.success(userService.modifyUser(dto, authentication.getName()));
     }
+
+    //계정 삭제
+    @DeleteMapping("/delete")
+    @Operation(summary = "내 계정 삭제", description = "내 계정 정보  삭제하기")
+    public Response<Boolean> delete(@ApiIgnore Authentication authentication){
+        return Response.success(userService.deleteUser(authentication.getName()));
+    }
+
 }

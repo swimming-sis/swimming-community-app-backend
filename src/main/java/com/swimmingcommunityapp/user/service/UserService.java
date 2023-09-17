@@ -109,4 +109,15 @@ public class UserService {
 
         return UserDto.detailUser(savedUser);
     }
+
+    public Boolean deleteUser(String userName) {
+
+        //username 없음
+        User selectedUser = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        userRepository.delete(selectedUser);
+
+        return true;
+    }
 }
