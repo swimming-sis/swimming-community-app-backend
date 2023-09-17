@@ -37,4 +37,8 @@ public class Review extends BaseEntity {
     private SwimmingPool swimmingPool;
 
     private boolean deleted = false;
+
+    public void updateReview(String contents){
+        this.contents = contents;
+    }
 }

@@ -35,4 +35,10 @@ public class ReviewRestController {
         return Response.success(reviewService.deleteReview(swimmingPoolId, reviewId, authentication.getName()));
     }
 
+    //리뷰 수정
+    @PutMapping("/{swimmingPoolId}/reviews/{reviewId}/modify")
+    @Operation(summary = "리뷰 수정", description = "로그인 후, 수영장 리뷰 수정")
+    public Response<ReviewDto> modify(@RequestBody ReviewRequest dto, @PathVariable Long swimmingPoolId, @PathVariable Long reviewId, @ApiIgnore Authentication authentication){
+        return Response.success(reviewService.modifyReview(dto,swimmingPoolId,reviewId,authentication.getName()));
+    }
 }

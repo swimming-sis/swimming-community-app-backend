@@ -19,6 +19,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final SwimmingPoolRepository swimmingPoolRepository;
 
+    //리뷰 작성
     public ReviewDto createReview(ReviewRequest dto, Long swimmingPoolId, String userName) {
         //userName 정보를 못찾을때 에러처리
         User foundUser = userRepository.findByUserName(userName)
@@ -38,6 +39,7 @@ public class ReviewService {
         return ReviewDto.of(savedReview);
     }
 
+    //리뷰 삭제
     public Boolean deleteReview(Long swimmingPoolId, Long reviewId, String userName) {
         //userName 정보를 못찾을때 에러처리
         User foundUser = userRepository.findByUserName(userName)
@@ -53,4 +55,24 @@ public class ReviewService {
         reviewRepository.delete(review);
         return true;
     }
+
+    //리뷰 수정
+    public ReviewDto modifyReview(ReviewRequest dto, Long swimmingPoolId, Long reviewId, String userName) {
+        //userName 정보를 못찾을때 에러처리
+        User foundUser = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+        //수영장 정보를 못찾을때 에러처리
+        SwimmingPool swimmingPool = swimmingPoolRepository.findByUniqueNumber(swimmingPoolId)
+                .orElseThrow(() -> new AppException(ErrorCode.SWIMMINGPOOL_NOT_FOUND));
+
+        //리뷰 정보를 못찾을때 에러처리
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new AppException(ErrorCode.REVIEW_NOT_FOUND));
+
+        review.updateReview(dto.getContents());
+        Review savedReview = reviewRepository.save(review);
+
+        return ReviewDto.of(savedReview);
+    }
+
 }
