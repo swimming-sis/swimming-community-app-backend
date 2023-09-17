@@ -117,5 +117,16 @@ public class ReviewService {
 
     }
 
+    // 내 리뷰 목록 조회
+    public Page<ReviewDto> myReviewList(Pageable pageable, String userName) {
+        //userName 정보를 못찾을때 에러처리
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
 
+        Page<Review> reviews = reviewRepository.findByUserId(user.getId(),pageable);
+
+        Page<ReviewDto> reviewDto = ReviewDto.toDto(reviews);
+        return reviewDto;
+
+    }
 }

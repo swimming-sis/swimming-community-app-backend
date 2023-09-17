@@ -59,4 +59,11 @@ public class ReviewRestController {
         return Response.success(reviewDto);
     }
 
+    //내 리뷰 목록 조회
+    @GetMapping("/reviews/my")
+    @Operation(summary = "내 리뷰 목록 조회", description = "로그인 후, 내가 작성한 리뷰 목록을 조회")
+    public Response<Page<ReviewDto>> myReviewList(@PageableDefault(sort = "createdAt",size = 10,direction = Sort.Direction.DESC) Pageable pageable,@ApiIgnore Authentication authentication){
+        Page<ReviewDto> reviewDto = reviewService.myReviewList(pageable,authentication.getName());
+        return Response.success(reviewDto);
+    }
 }
