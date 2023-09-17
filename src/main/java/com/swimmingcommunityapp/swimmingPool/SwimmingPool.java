@@ -1,17 +1,24 @@
 package com.swimmingcommunityapp.swimmingPool;
 
+import com.swimmingcommunityapp.review.Review;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
+@Where(clause = "deleted = false")
+@SQLDelete(sql = "UPDATE post SET deleted = true WHERE swimming_pool_id = ?")
 public class SwimmingPool {
 
     @Id
@@ -28,5 +35,11 @@ public class SwimmingPool {
     private String phone;
     private Long x;
     private Long y;
+
+    @Builder.Default
+    private boolean deleted = false;
+
+    @OneToMany(mappedBy = "swimmingPool",cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
 
 }
