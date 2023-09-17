@@ -1,6 +1,7 @@
 package com.swimmingcommunityapp.user.service;
 
 import com.swimmingcommunityapp.user.request.UserJoinRequest;
+import com.swimmingcommunityapp.user.request.UserModifyRequest;
 import com.swimmingcommunityapp.user.response.UserDto;
 import com.swimmingcommunityapp.user.response.UserJoinResponse;
 import com.swimmingcommunityapp.user.request.UserLoginRequest;
@@ -11,14 +12,17 @@ import com.swimmingcommunityapp.exception.AppException;
 import com.swimmingcommunityapp.exception.ErrorCode;
 import com.swimmingcommunityapp.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
@@ -90,5 +94,19 @@ public class UserService {
 
 
         return UserDto.detailUser(selectedUser);
+    }
+
+    public UserDto modifyUser(UserModifyRequest dto, String userName) {
+
+        //username 없음
+        User selectedUser = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+
+        String securityNewPassword = encoder.encode(dto.getPassword());
+        selectedUser.updateUser(dto.getNickName(),dto.getPhoneNumber(),securityNewPassword);
+        User savedUser = userRepository.save(selectedUser);
+
+        return UserDto.detailUser(savedUser);
     }
 }

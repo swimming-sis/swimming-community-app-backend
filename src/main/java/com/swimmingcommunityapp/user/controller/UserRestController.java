@@ -1,6 +1,7 @@
 package com.swimmingcommunityapp.user.controller;
 
 import com.swimmingcommunityapp.user.request.UserJoinRequest;
+import com.swimmingcommunityapp.user.request.UserModifyRequest;
 import com.swimmingcommunityapp.user.response.UserDto;
 import com.swimmingcommunityapp.user.response.UserJoinResponse;
 import com.swimmingcommunityapp.user.request.UserLoginRequest;
@@ -10,6 +11,7 @@ import com.swimmingcommunityapp.response.Response;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 import org.springframework.security.core.Authentication;
@@ -18,6 +20,7 @@ import org.springframework.security.core.Authentication;
 @RequestMapping("api/v1/users")
 @RequiredArgsConstructor
 @Api(tags = "1. 회원 인증, 인가")
+@Slf4j
 public class UserRestController {
 
     private final UserService userService;
@@ -62,5 +65,12 @@ public class UserRestController {
     @Operation(summary = "내 계정 조회", description = "내 계정 정보 조회 하기")
     public Response<UserDto> detail(@ApiIgnore Authentication authentication){
         return Response.success(userService.detailUser(authentication.getName()));
+    }
+
+    //계정 정보 수정
+    @PutMapping("modify")
+    @Operation(summary = "내 계정 수정", description = "내 계정 정보  수정하기")
+    public Response<UserDto> modify(@RequestBody UserModifyRequest dto, @ApiIgnore Authentication authentication){
+        return Response.success(userService.modifyUser(dto, authentication.getName()));
     }
 }
