@@ -29,5 +29,12 @@ public class LikeRestController {
     @Operation(summary = "좋아요 취소", description = "게시물의 좋아요 취소")
     public Response<Boolean> deleteLike(@PathVariable Long postId, @ApiIgnore Authentication authentication){
         return Response.success(likeService.deletreLike(postId, authentication.getName()));
+
+    }
+
+    @GetMapping("/{postId}/likes")
+    @Operation(summary = "좋아요 조회", description = "해당 게시물에 좋아요를 눌렀는지 확인")
+    public Response<Boolean> searchLike(@PathVariable Long postId, @ApiIgnore Authentication authentication){
+        return Response.success(likeService.searchLike(postId,authentication.getName()));
     }
 }

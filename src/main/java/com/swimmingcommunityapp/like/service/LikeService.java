@@ -65,6 +65,7 @@ public class LikeService {
     }
 
     public void updateLikeCnt(Long postId, Long cnt) {
+        //postId 없을때 에러 처리
         Post foundPost = postRepository.findById(postId)
                 .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
 
@@ -74,4 +75,17 @@ public class LikeService {
 
     }
 
+    public Boolean searchLike(Long postId, String userName) {
+        //postId 없을때 에러 처리
+        Post foundPost = postRepository.findById(postId)
+                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
+
+        //userName 정보를 못찾을때 에러처리
+        User foundUser = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+
+        //좋아요 중복체크 확인
+        return likeRepository.findByUserAndPost(foundUser, foundPost).isPresent();
+    }
 }
