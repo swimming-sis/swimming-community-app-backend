@@ -6,7 +6,6 @@ import com.swimmingcommunityapp.comment.response.CommentDeleteResponse;
 import com.swimmingcommunityapp.comment.response.CommentDto;
 import com.swimmingcommunityapp.comment.response.CommentModifyResponse;
 import com.swimmingcommunityapp.comment.service.CommentService;
-import com.swimmingcommunityapp.post.response.PostDto;
 import com.swimmingcommunityapp.response.Response;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;

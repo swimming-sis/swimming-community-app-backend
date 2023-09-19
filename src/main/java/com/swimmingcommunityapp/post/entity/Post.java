@@ -16,9 +16,9 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 @Entity
+@NoArgsConstructor
 @Where(clause = "deleted = false")
 @SQLDelete(sql = "UPDATE post SET deleted = true WHERE post_id = ?")
 public class Post extends BaseEntity {
