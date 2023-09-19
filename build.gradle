@@ -24,6 +24,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+	implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 
 	testImplementation 'org.projectlombok:lombok:1.18.22'
 	dependencies {
@@ -43,6 +44,9 @@ dependencies {
 		//swagger
 		implementation "io.springfox:springfox-boot-starter:3.0.0"
 		implementation "io.springfox:springfox-swagger-ui:3.0.0"
+
+		//redis
+		implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	}
 
 	tasks.named('test') {
