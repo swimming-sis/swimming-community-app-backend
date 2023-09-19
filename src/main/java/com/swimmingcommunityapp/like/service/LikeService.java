@@ -6,7 +6,6 @@ import com.swimmingcommunityapp.like.entity.Like;
 import com.swimmingcommunityapp.like.repository.LikeRepository;
 import com.swimmingcommunityapp.post.entity.Post;
 import com.swimmingcommunityapp.post.repository.PostRepository;
-import com.swimmingcommunityapp.post.response.PostDto;
 import com.swimmingcommunityapp.user.entity.User;
 import com.swimmingcommunityapp.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -64,9 +62,9 @@ public class LikeService {
             likeRepository.delete(foundLike);
             updateLikeCnt(postId, -1l);
             return "성공";
-        }
-
+        } else return "실패";
     }
+
 
     public void updateLikeCnt(Long postId, Long cnt) {
         //postId 없을때 에러 처리
