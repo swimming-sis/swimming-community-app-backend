@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Table(name = "Likes")
 @Where(clause = "deleted = false")
 @SQLDelete(sql = "UPDATE likes SET deleted = true WHERE like_id = ?")

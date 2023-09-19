@@ -21,14 +21,14 @@ public class LikeRestController {
 
     @PostMapping("/{postId}/likes")
     @Operation(summary = "좋아요 누르기", description = "게시물의 좋아요 누르기")
-    public Response<Boolean> like(@PathVariable Long postId, @ApiIgnore Authentication authentication){
+    public Response<String> like(@PathVariable Long postId, @ApiIgnore Authentication authentication){
         return Response.success(likeService.addLike(postId, authentication.getName()));
     }
 
     @DeleteMapping ("/{postId}/likes")
     @Operation(summary = "좋아요 취소", description = "게시물의 좋아요 취소")
-    public Response<Boolean> deleteLike(@PathVariable Long postId, @ApiIgnore Authentication authentication){
-        return Response.success(likeService.deletreLike(postId, authentication.getName()));
+    public Response<String> deleteLike(@PathVariable Long postId, @ApiIgnore Authentication authentication){
+        return Response.success(likeService.deleteLike(postId, authentication.getName()));
 
     }
 

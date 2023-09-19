@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -21,7 +24,9 @@ public class LikeService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    public Boolean addLike(Long postId, String userName) {
+
+    @Transactional
+    public String addLike(Long postId, String userName) {
         //postId 없을때 에러 처리
         Post foundPost = postRepository.findById(postId)
                 .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
@@ -30,22 +35,19 @@ public class LikeService {
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
 
         //좋아요 중복체크 확인
-        likeRepository.findByUserAndPost(foundUser, foundPost)
-                .ifPresent(like -> {
-                    throw new AppException(ErrorCode.LIKE_DUPLICATION);
-                });
-
-        //좋아요 저장
-        Like savedlike = Like.createLike(foundUser,foundPost);
-        likeRepository.save(savedlike);
-
-        updateLikeCnt(postId,1l);
-
-        return true;
+        if(likeRepository.findByUserAndPost(foundUser, foundPost).isPresent()){
+            return "LIKE_DUPLICATION";
+        } else {
+            Like savedlike = Like.createLike(foundUser,foundPost);
+            likeRepository.save(savedlike);
+            updateLikeCnt(postId,1l);
+            return "성공";
+        }
     }
 
 
-    public Boolean deletreLike(Long postId, String userName) {
+    @Transactional
+    public String deleteLike(Long postId, String userName) {
         //postId 없을때 에러 처리
         Post foundPost = postRepository.findById(postId)
                 .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
@@ -53,15 +55,17 @@ public class LikeService {
         User foundUser = userRepository.findByUserName(userName)
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
 
+        //like 정보가 삭제되고 업을때 에러처리
+        Like foundLike = likeRepository.findByUserAndPost(foundUser, foundPost)
+                .orElseThrow(() -> new AppException(ErrorCode.LIKE_CANCEL_DUPLICATION));
+
         //좋아요 중복체크 되면 삭제
-        likeRepository.findByUserAndPost(foundUser, foundPost)
-                .ifPresent((a) -> {
-                    likeRepository.delete(a);
-                });
+        if (likeRepository.findByUserAndPost(foundUser, foundPost).isPresent()) {
+            likeRepository.delete(foundLike);
+            updateLikeCnt(postId, -1l);
+            return "성공";
+        }
 
-        updateLikeCnt(postId,-1l);
-
-        return true;
     }
 
     public void updateLikeCnt(Long postId, Long cnt) {
