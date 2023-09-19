@@ -24,6 +24,7 @@ public enum ErrorCode {
     POST_NOT_FOUND(HttpStatus.NOT_FOUND,"해당 게시글이 없습니다."),
 
     LIKE_DUPLICATION(HttpStatus.CONFLICT,"이미 좋아요를 눌렀던 게시글입니다."),
+    LIKE_CANCEL_DUPLICATION(HttpStatus.CONFLICT,"이미 좋아요 취소를 눌렀던 게시글입니다."),
 
     DATABASE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "DB에러");
 
