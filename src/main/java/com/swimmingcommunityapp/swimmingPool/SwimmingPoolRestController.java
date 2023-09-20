@@ -22,9 +22,8 @@ public class SwimmingPoolRestController {
     //수영장 등록
     @PostMapping
     @Operation(summary = "수영장 등록", description = "리뷰 등록을 위해 수영장데이터 등록")
-    public Response<Void> create(@RequestBody SwimmingPoolCreateRequest dto, @ApiIgnore Authentication authentication) {
-        swimmingPoolService.createSwimmingPool(dto, authentication.getName());
-        return Response.success();
+    public Response<String> create(@RequestBody SwimmingPoolCreateRequest dto, @ApiIgnore Authentication authentication) {
+        return Response.success(swimmingPoolService.createSwimmingPool(dto, authentication.getName()));
     }
 
     //수영장 조회
