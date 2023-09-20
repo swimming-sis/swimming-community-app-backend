@@ -34,12 +34,9 @@ public class SwimmingPoolService {
         SwimmingPool swimmingPool = SwimmingPool.builder()
                 .uniqueNumber(dto.getUniqueNumber())
                 .placeName(dto.getPlaceName())
-                .distance(dto.getDistance())
                 .placeUrl(dto.getPlaceUrl())
                 .roadAddressName(dto.getRoadAddressName())
                 .phone(dto.getPhone())
-                .x(dto.getX())
-                .y(dto.getY())
                 .build();
 
         swimmingPoolRepository.save(swimmingPool);
