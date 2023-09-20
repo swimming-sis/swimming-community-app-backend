@@ -71,7 +71,7 @@ public class CommentService {
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
 
         //userName이 일치하지 않을때 에러 처리
-        if (!Objects.equals(foundPost.getUser().getUserName(), userName)) {
+        if (!Objects.equals(foundComment.getUser().getUserName(), userName)) {
             throw new AppException(ErrorCode.INVALID_PERMISSION);
         }
 
@@ -102,7 +102,7 @@ public class CommentService {
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
 
         //userName이 일치하지 않을때 에러 처리
-        if (!Objects.equals(foundPost.getUser().getUserName(), userName)) {
+        if (!Objects.equals(foundComment.getUser().getUserName(), userName)) {
             throw new AppException(ErrorCode.INVALID_PERMISSION);
         }
 
