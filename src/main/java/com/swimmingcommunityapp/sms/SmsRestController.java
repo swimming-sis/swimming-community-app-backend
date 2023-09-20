@@ -15,17 +15,18 @@ import java.security.NoSuchAlgorithmException;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/users/phoneNumber")
 @Api(tags = "7. 핸드폰 인증")
 public class SmsRestController {
     private final SmsService smsService;
 
-    @PostMapping
+    @PostMapping("/send")
     @Operation(summary = "핸드폰 인증 메세지 발송", description = "회원가입 시, 유효한 사용자 인증을 위해 핸드폰 인증 메세지 발송")
     public Response<SmsResponse> send(@RequestBody MessageDto messageDto) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
         return Response.success(smsService.sendSms(messageDto));
     }
 
-    @PostMapping ("/api/v1/users/phoneNumber/check")
+    @PostMapping ("/check")
     @Operation(summary = "핸드폰 인증 확인", description = "회원가입 시, 유효한 사용자 인증을 위해 핸드폰 인증 번호 일치 여부")
     public Response<Boolean> check(@RequestBody CheckPhoneNumberRequest dto) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
         return Response.success(smsService.checkSms(dto.getPhoneNumber(),dto.getCheckNumber()));

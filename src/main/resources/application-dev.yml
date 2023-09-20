@@ -1,0 +1,35 @@
+spring:
+  redis:
+    host: 172.31.44.177
+    port: 6379
+    password: 114785asd!
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://ec2-3-39-189-171.ap-northeast-2.compute.amazonaws.com:3306/swimming-community-app
+    username: root
+    password: 114785asd!
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database: mysql
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+server:
+  servlet:
+    encoding:
+      force-response: true
+jwt:
+  token:
+    secret: kahyun
+    
+naver-cloud-sms:
+  senderPhone: "01054107430"
+  accessKey: WUx7sv5tqaneU3PPU6nG
+  secretKey: D1NKVMNJnrPLZhvYids3yXaEBRRAZwDsAOPXU5ws
+  serviceId: ncp:sms:kr:315593888843:swimming-community-app
