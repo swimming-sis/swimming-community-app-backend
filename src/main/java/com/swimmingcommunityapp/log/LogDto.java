@@ -1,8 +1,6 @@
 package com.swimmingcommunityapp.log;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.swimmingcommunityapp.post.entity.Post;
-import com.swimmingcommunityapp.post.response.PostDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

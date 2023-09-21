@@ -2,8 +2,6 @@ package com.swimmingcommunityapp.log;
 
 import com.swimmingcommunityapp.exception.AppException;
 import com.swimmingcommunityapp.exception.ErrorCode;
-import com.swimmingcommunityapp.post.entity.Post;
-import com.swimmingcommunityapp.post.response.PostDto;
 import com.swimmingcommunityapp.user.entity.User;
 import com.swimmingcommunityapp.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -84,5 +82,22 @@ public class LogService {
         Page<Log> log = logRepository.findAll(pageable);
         Page<LogDto> logDto = LogDto.toDto(log);
         return logDto;
+    }
+
+    public LogDto detailLog(Long logId, String userName) {
+        //일지를 못찾으면 에러처리
+        Log log = logRepository.findById(logId)
+                .orElseThrow(() -> new AppException(ErrorCode.LOG_NOT_FOUND));
+
+        //userName 정보를 못찾을때 에러처리
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        //userName이 일치하지 않을때 에러 처리
+        if (!Objects.equals(log.getUser().getUserName(),userName)){
+            throw new AppException(ErrorCode.INVALID_PERMISSION);
+        }
+
+        return LogDto.fromEntity(log);
     }
 }

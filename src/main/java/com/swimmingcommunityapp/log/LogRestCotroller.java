@@ -48,5 +48,11 @@ public class LogRestCotroller {
         return Response.success(logDto);
     }
 
+    @GetMapping("/{logId}/detail")
+    @Operation(summary = "일지 1개 조회", description = "로그인 후, 자신이 작성한 일지만 조회 가능")
+    public Response<LogDto> modify(@PathVariable Long logId, @ApiIgnore Authentication authentication) {
+        return Response.success(logService.detailLog(logId, authentication.getName()));
+    }
+
 
 }
