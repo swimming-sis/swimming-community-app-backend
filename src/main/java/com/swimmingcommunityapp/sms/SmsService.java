@@ -3,13 +3,10 @@ package com.swimmingcommunityapp.sms;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swimmingcommunityapp.configuration.chekNumber.CheckNumberService;
-import com.swimmingcommunityapp.exception.AppException;
-import com.swimmingcommunityapp.exception.ErrorCode;
+import groovy.util.logging.Slf4j;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.cache.CacheKeyPrefix;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -48,8 +45,12 @@ public class SmsService {
     private String phone;
 
     //난수 생성
-    Random random = new Random();
-    int randomNumber = random.nextInt(888888)+111111;
+    public static int generateAuthNo() {
+        java.util.Random generator = new java.util.Random();
+        generator.setSeed(System.currentTimeMillis());
+        return generator.nextInt(1000000) % 1000000;
+    }
+    int randomNumber =generateAuthNo();
 
     //헤더 암호화
     public String makeSignature(Long time) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
