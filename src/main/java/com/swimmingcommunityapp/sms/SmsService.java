@@ -25,6 +25,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -46,9 +47,17 @@ public class SmsService {
 
     //난수 생성
     public static int generateAuthNo() {
-        java.util.Random generator = new java.util.Random();
-        generator.setSeed(System.currentTimeMillis());
-        return generator.nextInt(1000000) % 1000000;
+        //uuid 생성
+        UUID uuid = UUID.randomUUID();
+
+        // Most Significant Bits (MSB)와 Least Significant Bits (LSB) 추출
+        long mostSignificantBits = uuid.getMostSignificantBits();
+        long leastSignificantBits = uuid.getLeastSignificantBits();
+
+        // Random 객체 초기화
+        Random random = new Random(mostSignificantBits ^ leastSignificantBits);
+
+        return random.nextInt(888888)+111111;
     }
     int randomNumber =generateAuthNo();
 
