@@ -49,7 +49,7 @@ public class ReviewDto {
                 .userId(r.getUser().getId())
                 .userName(r.getUser().getUserName())
                 .nickName(r.getUser().getNickName())
-                .swimmingPoolId(r.getSwimmingPool().getId())
+                .swimmingPoolId(r.getSwimmingPool().getUniqueNumber())
                 .contents(r.getContents())
                 .ratingStar(r.getRatingStar())
                 .createdAt(r.getCreatedAt())
