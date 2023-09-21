@@ -51,4 +51,24 @@ public class LogService {
         logRepository.delete(log);
         return "삭제 성공";
     }
+
+    public LogDto modifyLog(LogRequest dto, Long logId, String userName) {
+        //일지를 못찾으면 에러처리
+        Log log = logRepository.findById(logId)
+                .orElseThrow(() -> new AppException(ErrorCode.LOG_NOT_FOUND));
+
+        //userName 정보를 못찾을때 에러처리
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        //userName이 일치하지 않을때 에러 처리
+        if (!Objects.equals(log.getUser().getUserName(),userName)){
+            throw new AppException(ErrorCode.INVALID_PERMISSION);
+        }
+
+        log.updateLog(dto);
+        Log savaedLog = logRepository.save(log);
+
+        return LogDto.fromEntity(savaedLog);
+    }
 }

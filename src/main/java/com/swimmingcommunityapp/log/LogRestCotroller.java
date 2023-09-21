@@ -36,4 +36,11 @@ public class LogRestCotroller {
         return Response.success(logService.deleteLog(logId, authentication.getName()));
     }
 
+    @PutMapping("/{logId}/modify")
+    @Operation(summary = "일지 수정", description = "로그인 후, 자신이 작성한 일지만 수정 가능")
+    public Response<LogDto> modify(@RequestBody LogRequest dto, @PathVariable Long logId, @ApiIgnore Authentication authentication) {
+        return Response.success(logService.modifyLog(dto,logId, authentication.getName()));
+    }
+
+
 }

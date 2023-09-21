@@ -37,6 +37,14 @@ public class Log extends BaseEntity {
 
     @Builder.Default
     private boolean deleted = false;
+
+    public void updateLog(LogRequest dto) {
+        this.distance = dto.getDistance();
+        this.time = dto.getTime();
+        this.calorie = dto.getCalorie();
+        this.contents = dto.getContents();
+    }
+
 }
 
 
