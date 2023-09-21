@@ -32,6 +32,7 @@ public class SecurityConfig {
                 .cors().and() // cross site 에서 도메인이 다를때
                 .authorizeRequests()
                 .antMatchers("/swagger-ui/**").permitAll()
+                .antMatchers("/api/v1/users/phoneNumber").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/v1/users/**").permitAll()
                 .antMatchers("/api/v1/users/join","/api/v1/users/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/**").authenticated()
