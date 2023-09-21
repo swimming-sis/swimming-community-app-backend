@@ -35,6 +35,8 @@ public class Log extends BaseEntity {
 
     private String contents;
 
+    @Builder.Default
+    private boolean deleted = false;
 }
 
 

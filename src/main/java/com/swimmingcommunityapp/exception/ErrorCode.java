@@ -17,6 +17,9 @@ public enum ErrorCode {
     SWIMMINGPOOL_NOT_FOUND(HttpStatus.NOT_FOUND,"존재하지 않는 수영장 데이터입니다."),
     REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND,"존재하지 않는 리뷰입니다."),
     PHONENUMBER_NOT_FOUND(HttpStatus.NOT_FOUND,"존재하지 않는 핸드폰 번호입니다."),
+    TAG_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 태그입니다."),
+    REVIEWTAG_NOT_FOUND(HttpStatus.NOT_FOUND,"존재하지 않는 리뷰와 태그입니다." ),
+    LOG_NOT_FOUND(HttpStatus.NOT_FOUND,"존재하지 않는 일지입니다." ),
 
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED,"패스워드가 잘못되었습니다."),
 
