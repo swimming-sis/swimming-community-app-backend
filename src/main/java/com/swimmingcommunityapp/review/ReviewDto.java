@@ -19,6 +19,7 @@ public class ReviewDto {
     private String nickName;
     private Long swimmingPoolId;
     private String contents;
+    private Long ratingStar;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
@@ -33,6 +34,7 @@ public class ReviewDto {
                 .nickName(review.getUser().getNickName())
                 .swimmingPoolId(review.getSwimmingPool().getUniqueNumber())
                 .contents(review.getContents())
+                .ratingStar(review.getRatingStar())
                 .createdAt(review.getCreatedAt())
                 .lastModifiedAt(review.getLastModifiedAt())
                 .build();
@@ -46,6 +48,7 @@ public class ReviewDto {
                 .nickName(r.getUser().getNickName())
                 .swimmingPoolId(r.getSwimmingPool().getId())
                 .contents(r.getContents())
+                .ratingStar(r.getRatingStar())
                 .createdAt(r.getCreatedAt())
                 .lastModifiedAt(r.getLastModifiedAt())
                 .build());

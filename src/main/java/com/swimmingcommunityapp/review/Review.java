@@ -36,9 +36,12 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "swimming_pool_id")
     private SwimmingPool swimmingPool;
 
+    private Long ratingStar;
+
     private boolean deleted = false;
 
-    public void updateReview(String contents){
+    public void updateReview(String contents,Long ratingStar){
         this.contents = contents;
+        this.ratingStar = ratingStar;
     }
 }

@@ -1,6 +1,5 @@
 package com.swimmingcommunityapp.review;
 
-import com.swimmingcommunityapp.comment.response.CommentDto;
 import com.swimmingcommunityapp.response.Response;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
+
 
 @RestController
 @RequestMapping("/api/v1/swimmingPools")

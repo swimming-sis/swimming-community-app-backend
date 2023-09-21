@@ -2,7 +2,6 @@ package com.swimmingcommunityapp.review;
 
 import com.swimmingcommunityapp.exception.AppException;
 import com.swimmingcommunityapp.exception.ErrorCode;
-import com.swimmingcommunityapp.post.response.PostDto;
 import com.swimmingcommunityapp.swimmingPool.SwimmingPool;
 import com.swimmingcommunityapp.swimmingPool.SwimmingPoolRepository;
 import com.swimmingcommunityapp.user.entity.User;
@@ -13,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -21,6 +21,7 @@ public class ReviewService {
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
     private final SwimmingPoolRepository swimmingPoolRepository;
+
 
     //리뷰 작성
     public ReviewDto createReview(ReviewRequest dto, Long swimmingPoolId, String userName) {
@@ -33,12 +34,16 @@ public class ReviewService {
                 .orElseThrow(() -> new AppException(ErrorCode.SWIMMINGPOOL_NOT_FOUND));
 
         Review review = Review.builder()
+                .ratingStar(dto.getRatingStar())
                 .contents(dto.getContents())
                 .user(foundUser)
                 .swimmingPool(swimmingPool)
                 .build();
 
-       Review savedReview = reviewRepository.save(review);
+
+        //리뷰 저장
+        Review savedReview = reviewRepository.save(review);
+
         return ReviewDto.of(savedReview);
     }
 
@@ -72,7 +77,7 @@ public class ReviewService {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new AppException(ErrorCode.REVIEW_NOT_FOUND));
 
-        review.updateReview(dto.getContents());
+        review.updateReview(dto.getContents(), dto.getRatingStar());
         Review savedReview = reviewRepository.save(review);
 
         return ReviewDto.of(savedReview);
@@ -92,11 +97,9 @@ public class ReviewService {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new AppException(ErrorCode.REVIEW_NOT_FOUND));
 
-
         return ReviewDto.of(review);
 
     }
-
 
 
     //수영장별 리뷰 리스트 조회
@@ -114,7 +117,6 @@ public class ReviewService {
         Page<ReviewDto> reviewDto = ReviewDto.toDto(reviews);
         return reviewDto;
 
-
     }
 
     // 내 리뷰 목록 조회
@@ -129,4 +131,5 @@ public class ReviewService {
         return reviewDto;
 
     }
+
 }
