@@ -1,10 +1,13 @@
 package com.swimmingcommunityapp.log;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.swimmingcommunityapp.post.entity.Post;
+import com.swimmingcommunityapp.post.response.PostDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 
@@ -39,4 +42,19 @@ public class LogDto {
                 .lastModifiedAt(log.getLastModifiedAt())
                 .build();
     }
+
+    public static Page<LogDto> toDto(Page<Log> log){
+        Page<LogDto> logDto = log.map(l -> LogDto.builder()
+                .logId(l.getId())
+                .nickName(l.getUser().getNickName())
+                .distance(l.getDistance())
+                .time(l.getTime())
+                .calorie(l.getCalorie())
+                .contents(l.getContents())
+                .createdAt(l.getCreatedAt())
+                .lastModifiedAt(l.getLastModifiedAt())
+                .build());
+        return logDto;
+    }
+
 }

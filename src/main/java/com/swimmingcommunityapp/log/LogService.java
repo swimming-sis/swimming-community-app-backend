@@ -2,9 +2,13 @@ package com.swimmingcommunityapp.log;
 
 import com.swimmingcommunityapp.exception.AppException;
 import com.swimmingcommunityapp.exception.ErrorCode;
+import com.swimmingcommunityapp.post.entity.Post;
+import com.swimmingcommunityapp.post.response.PostDto;
 import com.swimmingcommunityapp.user.entity.User;
 import com.swimmingcommunityapp.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -70,5 +74,15 @@ public class LogService {
         Log savaedLog = logRepository.save(log);
 
         return LogDto.fromEntity(savaedLog);
+    }
+
+    public Page<LogDto> pageList(Pageable pageable, String userName) {
+        //userName 정보를 못찾을때 에러처리
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        Page<Log> log = logRepository.findAll(pageable);
+        Page<LogDto> logDto = LogDto.toDto(log);
+        return logDto;
     }
 }

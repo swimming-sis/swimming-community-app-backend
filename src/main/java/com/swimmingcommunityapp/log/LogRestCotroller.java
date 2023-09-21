@@ -1,15 +1,13 @@
 package com.swimmingcommunityapp.log;
 
-import com.swimmingcommunityapp.post.request.PostCreateRequest;
-import com.swimmingcommunityapp.post.request.PostModifyRequest;
-import com.swimmingcommunityapp.post.response.PostCreateResponse;
-import com.swimmingcommunityapp.post.response.PostDeleteResponse;
-import com.swimmingcommunityapp.post.response.PostDto;
-import com.swimmingcommunityapp.post.response.PostModifyResponse;
 import com.swimmingcommunityapp.response.Response;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -40,6 +38,14 @@ public class LogRestCotroller {
     @Operation(summary = "일지 수정", description = "로그인 후, 자신이 작성한 일지만 수정 가능")
     public Response<LogDto> modify(@RequestBody LogRequest dto, @PathVariable Long logId, @ApiIgnore Authentication authentication) {
         return Response.success(logService.modifyLog(dto,logId, authentication.getName()));
+    }
+
+
+    @GetMapping
+    @Operation(summary = "일지 전체 목록 조회", description = "게시물 목록 최신순으로 10개씩 조회")
+    public Response<Page<LogDto>> pageable(@PageableDefault(sort = "createdAt",size = 10,direction = Sort.Direction.DESC) Pageable pageable,@ApiIgnore Authentication authentication){
+        Page<LogDto> logDto = logService.pageList(pageable, authentication.getName());
+        return Response.success(logDto);
     }
 
 
