@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class ReviewDto {
     private Long reviewId;
     private Long userId;
+    private String userName;
     private String nickName;
     private Long swimmingPoolId;
     private String contents;
@@ -32,6 +33,7 @@ public class ReviewDto {
                 .reviewId(review.getId())
                 .userId(review.getUser().getId())
                 .nickName(review.getUser().getNickName())
+                .userName(review.getUser().getUserName())
                 .swimmingPoolId(review.getSwimmingPool().getUniqueNumber())
                 .contents(review.getContents())
                 .ratingStar(review.getRatingStar())
@@ -45,6 +47,7 @@ public class ReviewDto {
         Page<ReviewDto> reviewDto = review.map(r -> ReviewDto.builder()
                 .reviewId(r.getId())
                 .userId(r.getUser().getId())
+                .userName(r.getUser().getUserName())
                 .nickName(r.getUser().getNickName())
                 .swimmingPoolId(r.getSwimmingPool().getId())
                 .contents(r.getContents())
