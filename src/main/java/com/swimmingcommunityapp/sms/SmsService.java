@@ -25,8 +25,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
+
 
 @Service
 @Slf4j
@@ -47,24 +47,20 @@ public class SmsService {
     private String phone;
 
     //난수 생성
-    public static int generateAuthNo() {
-        try {
-            SecureRandom random = SecureRandom.getInstanceStrong();
-            return random.nextInt(888888) + 111111;
-        } catch (NoSuchAlgorithmException e) {
-            // NoSuchAlgorithmException 처리
-            e.printStackTrace(); // 또는 로깅 등의 작업 수행
-            return -1; // 에러 상황에 대한 적절한 값을 반환
-        }
+    public static int generateRandomNumber() {
+        int min = 100000; // 최소값: 100000 (6자리)
+        int max = 999999; // 최대값: 999999 (6자리)
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
-    int randomNumber =generateAuthNo();
+
 
     //헤더 암호화
+
     public String makeSignature(Long time) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
         String space = " ";
         String newLine = "\n";
         String method = "POST";
-        String url = "/sms/v2/services/"+ this.serviceId+"/messages";
+        String url = "/sms/v2/services/" + this.serviceId + "/messages";
         String timestamp = time.toString();
         String accessKey = this.accessKey;
         String secretKey = this.secretKey;
@@ -88,9 +84,12 @@ public class SmsService {
 
         return encodeBase64String;
     }
-
     //sms 보내는 요청 메서드
+
     public SmsResponse sendSms(MessageDto messageDto) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
+
+        int randomNumber = generateRandomNumber();
+
         Long time = System.currentTimeMillis();
 
         HttpHeaders headers = new HttpHeaders();
@@ -108,7 +107,7 @@ public class SmsService {
                 .contentType("COMM")
                 .countryCode("82")
                 .from(phone)
-                .content("[어푸어푸 - 수영 커뮤니티 웹사이트] 인증번호 ["+randomNumber+"]를 입력해주세요.")
+                .content("[어푸어푸 - 수영 커뮤니티 웹사이트] 인증번호 [" + randomNumber + "]를 입력해주세요.")
                 .messages(messages)
                 .build();
 
@@ -118,17 +117,16 @@ public class SmsService {
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-        SmsResponse response = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/"+ serviceId +"/messages"), httpBody, SmsResponse.class);
+        SmsResponse response = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/" + serviceId + "/messages"), httpBody, SmsResponse.class);
 
-        checkNumberService.saveNumber(messageDto.getTo(),randomNumber);
+        checkNumberService.saveNumber(messageDto.getTo(), randomNumber);
 
         return response;
     }
 
 
-
     //sms 보내는 요청 메서드
-    public SmsResponse sendPassword(MessageDto messageDto,String changePassword) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    public SmsResponse sendPassword(MessageDto messageDto, String changePassword) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
         Long time = System.currentTimeMillis();
 
         HttpHeaders headers = new HttpHeaders();
@@ -146,7 +144,7 @@ public class SmsService {
                 .contentType("COMM")
                 .countryCode("82")
                 .from(phone)
-                .content("[어푸어푸 - 수영 커뮤니티 웹사이트] 임시 비밀번호는 ["+changePassword+"] 입니다.")
+                .content("[어푸어푸 - 수영 커뮤니티 웹사이트] 임시 비밀번호는 [" + changePassword + "] 입니다.")
                 .messages(messages)
                 .build();
 
@@ -156,9 +154,8 @@ public class SmsService {
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-        SmsResponse response = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/"+ serviceId +"/messages"), httpBody, SmsResponse.class);
+        SmsResponse response = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/" + serviceId + "/messages"), httpBody, SmsResponse.class);
 
-        checkNumberService.saveNumber(messageDto.getTo(),randomNumber);
 
         return response;
     }
@@ -167,7 +164,7 @@ public class SmsService {
 
         if (checkNumber == checkNumberService.checkNumber(phoneNumber)) {
             return true;
-        }else return false;
+        } else return false;
 
     }
 }
