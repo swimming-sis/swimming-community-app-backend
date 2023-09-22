@@ -25,6 +25,7 @@ public enum ErrorCode {
     FILE_NOT_EXISTS(HttpStatus.NOT_FOUND,"비어있는 파일입니다." ),
     POSTFILE_NOT_FOUND(HttpStatus.NOT_FOUND,"업로드된 파일을 찾을 수 없습니다." ),
     FILEPATH_NOT_FOUND(HttpStatus.NOT_FOUND,"파일 경로를 찾을 수 없습니다."),
+    LOGFILE_NOT_FOUND(HttpStatus.NOT_FOUND,"일지 파일을 찾을 수 없습니다." ),
 
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED,"패스워드가 잘못되었습니다."),
 

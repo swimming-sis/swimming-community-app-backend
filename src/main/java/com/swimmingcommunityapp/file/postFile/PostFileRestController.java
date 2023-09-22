@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/posts/")
 @RequiredArgsConstructor
-@Api(tags = "9. 파일 업로드")
+@Api(tags = "9. 개시물 파일 업로드")
 public class PostFileRestController {
 
     private final PostFileService postFileService;
@@ -31,7 +31,7 @@ public class PostFileRestController {
     //파일 삭제
     // S3 파일 삭제
     @Operation(summary = "게시판 첨부파일 삭제", description = "게시물 작성시, 업로드한 파일 삭제")
-    @DeleteMapping("/{postId}/postFiles/{postFileId}/files/delete")
+    @DeleteMapping("/{postId}/postFiles/{postFileId}/delete")
     public Response<String> delete(@PathVariable Long postId, @PathVariable Long postFileId, @ApiIgnore Authentication authentication, @RequestParam String filePath) {
         return Response.success(postFileService.deletePostFile(postId,postFileId,filePath,authentication.getName()));
     }
