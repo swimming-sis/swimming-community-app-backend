@@ -26,6 +26,7 @@ import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -130,11 +131,45 @@ public class UserService {
     }
 
     public String findId(String phoneNumber) {
-        //핸드폰 번호 등록되어있는지 확이
+        //핸드폰 번호 등록되어있는지 확인
         User user = userRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(()-> new AppException(ErrorCode.PHONENUMBER_NOT_FOUND));
 
         return nameMasking(user.getUserName());
+    }
+
+    public String findPassword(String userName, String phoneNumber) throws UnsupportedEncodingException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException {
+        //아이디와 핸드폰번호가 일치하는 사용자 찾기
+        User user = userRepository.findByPhoneNumberAndUserName(phoneNumber,userName)
+                .orElseThrow(()-> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        MessageDto messageDto = MessageDto.builder()
+                .to(phoneNumber)
+                .build();
+        //패스워드 설정
+        String changePassword = makeChangePassword();
+        smsService.sendPassword(messageDto,changePassword);
+
+        user.updatePassword(encoder.encode(changePassword));
+
+        //저장
+        userRepository.save(user);
+
+        return "새 임시 비밀번호 전송 완료";
+    }
+
+    public String makeChangePassword(){
+        UUID uuid = UUID.randomUUID();
+        long mostSignificantBits = uuid.getMostSignificantBits();
+        long leastSignificantBits = uuid.getLeastSignificantBits();
+
+        // UUID의 Most Significant Bits와 Least Significant Bits를 조합하여 16진수 문자열로 변환
+        String combinedHex = Long.toHexString(mostSignificantBits) + Long.toHexString(leastSignificantBits);
+
+        // 조합된 16진수 문자열에서 앞의 8글자만 추출
+        String shortUUID = combinedHex.substring(0, 8);
+
+        return shortUUID;
     }
 
     public String nameMasking(String userName) {
@@ -146,5 +181,4 @@ public class UserService {
             return userName.substring(0,6)+"****";
         }
     }
-
 }

@@ -128,6 +128,43 @@ public class SmsService {
     }
 
 
+
+    //sms 보내는 요청 메서드
+    public SmsResponse sendPassword(MessageDto messageDto,String changePassword) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
+        Long time = System.currentTimeMillis();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("x-ncp-apigw-timestamp", time.toString());
+        headers.set("x-ncp-iam-access-key", accessKey);
+        headers.set("x-ncp-apigw-signature-v2", makeSignature(time));
+
+        List<MessageDto> messages = new ArrayList<>();
+        messages.add(messageDto);
+
+
+        SmsRequestDto request = SmsRequestDto.builder()
+                .type("SMS")
+                .contentType("COMM")
+                .countryCode("82")
+                .from(phone)
+                .content("[어푸어푸 - 수영 커뮤니티 웹사이트] 임시 비밀번호는 ["+changePassword+"] 입니다.")
+                .messages(messages)
+                .build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String body = objectMapper.writeValueAsString(request);
+        HttpEntity<String> httpBody = new HttpEntity<>(body, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+        SmsResponse response = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/"+ serviceId +"/messages"), httpBody, SmsResponse.class);
+
+        checkNumberService.saveNumber(messageDto.getTo(),randomNumber);
+
+        return response;
+    }
+
     public Boolean checkSms(String phoneNumber, int checkNumber) {
 
         if (checkNumber == checkNumberService.checkNumber(phoneNumber)) {

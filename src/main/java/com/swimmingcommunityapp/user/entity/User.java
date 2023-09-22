@@ -52,5 +52,8 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.password = password;
     }
+    public void updatePassword(String password) {
+        this.password = password;
+    }
 
 }

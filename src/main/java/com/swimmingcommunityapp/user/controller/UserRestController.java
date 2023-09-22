@@ -1,5 +1,6 @@
 package com.swimmingcommunityapp.user.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.swimmingcommunityapp.user.request.UserJoinRequest;
 import com.swimmingcommunityapp.user.request.UserModifyRequest;
 import com.swimmingcommunityapp.user.response.UserDto;
@@ -15,6 +16,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 import org.springframework.security.core.Authentication;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 @RestController
 @RequestMapping("api/v1/users")
@@ -84,8 +90,15 @@ public class UserRestController {
     // 아이디 찾기
     @PostMapping("/account/id/find")
     @Operation(summary = "아이디 찾기", description = "핸드폰 번호로 아이디 찾기")
-    public Response<String> find(@RequestParam String phoneNumber){
+    public Response<String> findId(@RequestParam String phoneNumber){
         return Response.success(userService.findId(phoneNumber));
+    }
+
+    // 아이디 찾기
+    @PostMapping("/account/password/find")
+    @Operation(summary = "비밀번호 찾기", description = "아이디와 핸드폰 번호로 비밀번호 찾기")
+    public Response<String> findPassword(@RequestParam String userName, @RequestParam String phoneNumber) throws UnsupportedEncodingException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException {
+        return Response.success(userService.findPassword(userName,phoneNumber));
     }
 
 }
