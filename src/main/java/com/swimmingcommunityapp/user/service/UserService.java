@@ -1,5 +1,8 @@
 package com.swimmingcommunityapp.user.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.swimmingcommunityapp.sms.MessageDto;
+import com.swimmingcommunityapp.sms.SmsService;
 import com.swimmingcommunityapp.user.request.UserJoinRequest;
 import com.swimmingcommunityapp.user.request.UserModifyRequest;
 import com.swimmingcommunityapp.user.response.UserDto;
@@ -18,6 +21,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 @Service
@@ -26,6 +33,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
+    private final SmsService smsService;
 
     @Value("${jwt.token.secret}")
     private String key;
@@ -120,4 +128,23 @@ public class UserService {
 
         return true;
     }
+
+    public String findId(String phoneNumber) {
+        //핸드폰 번호 등록되어있는지 확이
+        User user = userRepository.findByPhoneNumber(phoneNumber)
+                .orElseThrow(()-> new AppException(ErrorCode.PHONENUMBER_NOT_FOUND));
+
+        return nameMasking(user.getUserName());
+    }
+
+    public String nameMasking(String userName) {
+        if (userName.length() <=9) {
+            return userName.substring(0,3)+"****";
+        } else if (userName.length() <= 13) {
+            return userName.substring(0,4)+"****";
+        }else{
+            return userName.substring(0,6)+"****";
+        }
+    }
+
 }

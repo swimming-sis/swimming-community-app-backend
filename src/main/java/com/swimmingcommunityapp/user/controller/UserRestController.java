@@ -19,7 +19,7 @@ import org.springframework.security.core.Authentication;
 @RestController
 @RequestMapping("api/v1/users")
 @RequiredArgsConstructor
-@Api(tags = "1. 회원 인증, 인가")
+@Api(tags = "01. 회원 인증, 인가")
 @Slf4j
 public class UserRestController {
 
@@ -79,6 +79,13 @@ public class UserRestController {
     @Operation(summary = "내 계정 삭제", description = "내 계정 정보  삭제하기")
     public Response<Boolean> delete(@ApiIgnore Authentication authentication){
         return Response.success(userService.deleteUser(authentication.getName()));
+    }
+
+    // 아이디 찾기
+    @PostMapping("/account/id/find")
+    @Operation(summary = "아이디 찾기", description = "핸드폰 번호로 아이디 찾기")
+    public Response<String> find(@RequestParam String phoneNumber){
+        return Response.success(userService.findId(phoneNumber));
     }
 
 }
