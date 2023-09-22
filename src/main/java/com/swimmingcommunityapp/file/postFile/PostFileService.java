@@ -1,7 +1,10 @@
 package com.swimmingcommunityapp.file.postFile;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.swimmingcommunityapp.exception.AppException;
@@ -34,6 +37,7 @@ public class PostFileService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+    //파일 업로드
     public PostFileCreateResponse uploadFile(Long postId, List<MultipartFile> multipartFile, String userName) {
         // 빈 파일이 아닌지 확인, 파일 자체를 첨부안하거나 첨부해도 내용이 비어있는지 확인 - 비어있으면 FILE_NOT_EXISTS 에러발생
         validateFileExists(multipartFile);
@@ -92,6 +96,39 @@ public class PostFileService {
 
         return PostFileCreateResponse.of(originalFileNameList, storedFileNameList);
     }
+
+    public String deletePostFile(Long postId, Long postFileId, String filePath, String userName) {
+
+        //postId 없을때 에러 처리
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
+
+        //userName 정보를 못찾을때 에러처리
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        PostFile postFile = postFileRepository.findById(postFileId)
+                .orElseThrow(()->new AppException(ErrorCode.POSTFILE_NOT_FOUND));
+
+        String key = postFile.getStoredFileUrl().substring(63);
+        if (key != filePath) {
+            new AppException(ErrorCode.FILEPATH_NOT_FOUND);
+        }
+
+        try {
+            // S3 업로드 파일 삭제
+            amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, filePath));
+            // 해당 업로드 파일 테이블에서도 같이 삭제
+            postFileRepository.delete(postFile);
+        } catch (AmazonServiceException e) {
+            e.printStackTrace();
+        } catch (SdkClientException e) {
+            e.printStackTrace();
+        }
+
+        return "파일 삭제 성공";
+    }
+
 
 
     // 빈 파일이 아닌지 확인, 파일 자체를 첨부안하거나 첨부해도 내용이 비어있는지 확인 - 비어있으면 FILE_NOT_EXISTS 에러발생

@@ -21,10 +21,20 @@ public class PostFileRestController {
 
     private final PostFileService postFileService;
 
-    @PostMapping(path="/{postId}/files/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    //파일 업로드
+    @PostMapping(path="/{postId}/postFiles/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "게시판 파일 업로드", description = "게시물 작성시, 파일 업로드")
     public Response<PostFileCreateResponse> upload(@PathVariable Long postId, @RequestPart List<MultipartFile> multipartFile, @ApiIgnore Authentication authentication){
         return Response.success(postFileService.uploadFile(postId,multipartFile,authentication.getName()));
     }
+
+    //파일 삭제
+    // S3 파일 삭제
+    @Operation(summary = "게시판 첨부파일 삭제", description = "게시물 작성시, 업로드한 파일 삭제")
+    @DeleteMapping("/{postId}/postFiles/{postFileId}/files/delete")
+    public Response<String> delete(@PathVariable Long postId, @PathVariable Long postFileId, @ApiIgnore Authentication authentication, @RequestParam String filePath) {
+        return Response.success(postFileService.deletePostFile(postId,postFileId,filePath,authentication.getName()));
+    }
+
 
 }

@@ -23,6 +23,8 @@ public enum ErrorCode {
     REVIEWTAG_NOT_FOUND(HttpStatus.NOT_FOUND,"존재하지 않는 리뷰와 태그입니다." ),
     LOG_NOT_FOUND(HttpStatus.NOT_FOUND,"존재하지 않는 일지입니다." ),
     FILE_NOT_EXISTS(HttpStatus.NOT_FOUND,"비어있는 파일입니다." ),
+    POSTFILE_NOT_FOUND(HttpStatus.NOT_FOUND,"업로드된 파일을 찾을 수 없습니다." ),
+    FILEPATH_NOT_FOUND(HttpStatus.NOT_FOUND,"파일 경로를 찾을 수 없습니다."),
 
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED,"패스워드가 잘못되었습니다."),
 
@@ -33,7 +35,6 @@ public enum ErrorCode {
     LIKE_DUPLICATION(HttpStatus.CONFLICT,"이미 좋아요를 눌렀던 게시글입니다."),
     LIKE_CANCEL_DUPLICATION(HttpStatus.CONFLICT,"이미 좋아요 취소를 눌렀던 게시글입니다."),
     NUMBER_CONFLICT(HttpStatus.CONFLICT,"인증번호가 일치하지 않습니다."),
-
     DATABASE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "DB에러");
 
     private HttpStatus httpStatus;
