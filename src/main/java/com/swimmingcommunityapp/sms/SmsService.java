@@ -22,6 +22,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -47,17 +48,14 @@ public class SmsService {
 
     //난수 생성
     public static int generateAuthNo() {
-        //uuid 생성
-        UUID uuid = UUID.randomUUID();
-
-        // Most Significant Bits (MSB)와 Least Significant Bits (LSB) 추출
-        long mostSignificantBits = uuid.getMostSignificantBits();
-        long leastSignificantBits = uuid.getLeastSignificantBits();
-
-        // Random 객체 초기화
-        Random random = new Random(mostSignificantBits ^ leastSignificantBits);
-
-        return random.nextInt(888888)+111111;
+        try {
+            SecureRandom random = SecureRandom.getInstanceStrong();
+            return random.nextInt(888888) + 111111;
+        } catch (NoSuchAlgorithmException e) {
+            // NoSuchAlgorithmException 처리
+            e.printStackTrace(); // 또는 로깅 등의 작업 수행
+            return -1; // 에러 상황에 대한 적절한 값을 반환
+        }
     }
     int randomNumber =generateAuthNo();
 
