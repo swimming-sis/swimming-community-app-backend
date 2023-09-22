@@ -8,9 +8,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/v1/logs")
@@ -48,10 +51,10 @@ public class LogRestCotroller {
         return Response.success(logDto);
     }
 
-    @GetMapping("/{logId}/detail")
-    @Operation(summary = "일지 1개 조회", description = "로그인 후, 자신이 작성한 일지만 조회 가능")
-    public Response<LogDto> modify(@PathVariable Long logId, @ApiIgnore Authentication authentication) {
-        return Response.success(logService.detailLog(logId, authentication.getName()));
+    @GetMapping("/{date}")
+    @Operation(summary = "날짜별 조회", description = "로그인 후, 날짜별 자신이 작성한 일지 조회")
+    public Response<Page<LogDto>> search(@PageableDefault(sort = "createdAt",size = 10,direction = Sort.Direction.DESC) Pageable pageable, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)Date date, @ApiIgnore Authentication authentication) {
+        return Response.success(logService.searchDateLog(date, authentication.getName(),pageable));
     }
 
 

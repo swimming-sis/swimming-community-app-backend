@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Objects;
 
 @Service
@@ -30,6 +31,7 @@ public class LogService {
                 .contents(dto.getContents())
                 .distance(dto.getDistance())
                 .time(dto.getTime())
+                .date(dto.getDate())
                 .build();
 
         Log savedLog = logRepository.save(log);
@@ -79,25 +81,19 @@ public class LogService {
         User user = userRepository.findByUserName(userName)
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
 
-        Page<Log> log = logRepository.findAll(pageable);
+        Page<Log> log = logRepository.findByUserId(user.getId(),pageable);
         Page<LogDto> logDto = LogDto.toDto(log);
         return logDto;
     }
 
-    public LogDto detailLog(Long logId, String userName) {
-        //일지를 못찾으면 에러처리
-        Log log = logRepository.findById(logId)
-                .orElseThrow(() -> new AppException(ErrorCode.LOG_NOT_FOUND));
+    public Page<LogDto> searchDateLog(Date date, String userName, Pageable pageable) {
 
         //userName 정보를 못찾을때 에러처리
         User user = userRepository.findByUserName(userName)
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
 
-        //userName이 일치하지 않을때 에러 처리
-        if (!Objects.equals(log.getUser().getUserName(),userName)){
-            throw new AppException(ErrorCode.INVALID_PERMISSION);
-        }
-
-        return LogDto.fromEntity(log);
+        Page<Log> log = logRepository.findByDateAndUserId(date,user.getId(),pageable);
+        Page<LogDto> logDto = LogDto.toDto(log);
+        return logDto;
     }
 }

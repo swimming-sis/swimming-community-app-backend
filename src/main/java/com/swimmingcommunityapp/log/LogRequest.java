@@ -1,9 +1,12 @@
 package com.swimmingcommunityapp.log;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 @Getter
 @AllArgsConstructor
@@ -13,6 +16,9 @@ public class LogRequest {
     private Long distance;
     private Long time;
     private Long calorie;
-
     private String contents;
+
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Asia/Seoul")
+    private Date date;
+
 }

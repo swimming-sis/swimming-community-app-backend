@@ -3,6 +3,7 @@ package com.swimmingcommunityapp.post.entity;
 import com.swimmingcommunityapp.BaseEntity;
 import com.swimmingcommunityapp.category.Category;
 import com.swimmingcommunityapp.comment.entity.Comment;
+import com.swimmingcommunityapp.file.postFile.PostFile;
 import com.swimmingcommunityapp.like.entity.Like;
 import com.swimmingcommunityapp.user.entity.User;
 import lombok.*;
@@ -55,6 +56,9 @@ public class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Like> like = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<PostFile> postFiles = new ArrayList<>();
 
     public void updatePost(String title, String body) {
         this.title = title;

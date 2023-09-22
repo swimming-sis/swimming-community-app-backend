@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @AllArgsConstructor
@@ -19,8 +20,10 @@ public class LogDto {
     private Long distance;
     private Long time;
     private Long calorie;
-
     private String contents;
+
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Asia/Seoul")
+    private Date date;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
@@ -36,6 +39,7 @@ public class LogDto {
                 .time(log.getTime())
                 .calorie(log.getCalorie())
                 .contents(log.getContents())
+                .date(log.getDate())
                 .createdAt(log.getCreatedAt())
                 .lastModifiedAt(log.getLastModifiedAt())
                 .build();
@@ -49,6 +53,7 @@ public class LogDto {
                 .time(l.getTime())
                 .calorie(l.getCalorie())
                 .contents(l.getContents())
+                .date(l.getDate())
                 .createdAt(l.getCreatedAt())
                 .lastModifiedAt(l.getLastModifiedAt())
                 .build());

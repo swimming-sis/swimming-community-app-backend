@@ -63,7 +63,7 @@ public class PostRestController {
 
     //게시물 전체 조회 (최신순, 10개마다 페이징처리)
     @GetMapping
-    @Operation(summary = "게시글 전체 목록 조회", description = "게시물 목록 최신순으로 20개씩 조회")
+    @Operation(summary = "게시글 전체 목록 조회", description = "게시물 목록 최신순으로 10개씩 조회")
     public Response<Page<PostDto>> pageable(@PageableDefault(sort = "createdAt",size = 10,direction = Sort.Direction.DESC) Pageable pageable){
         Page<PostDto> postDto = postService.pageList(pageable);
         return Response.success(postDto);
