@@ -16,7 +16,7 @@ import java.security.NoSuchAlgorithmException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users/phoneNumber")
-@Api(tags = "7. 핸드폰 인증")
+@Api(tags = "07. 핸드폰 인증")
 public class SmsRestController {
     private final SmsService smsService;
 

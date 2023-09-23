@@ -23,7 +23,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequestMapping("/api/v1/posts")
 @RequiredArgsConstructor
 @Slf4j
-@Api(tags = "3. 댓글")
+@Api(tags = "03. 댓글")
 public class CommentRestController {
 
     private final CommentService commentService;

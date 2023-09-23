@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/posts/")
 @RequiredArgsConstructor
-@Api(tags = "9. 개시물 파일 업로드")
+@Api(tags = "09. 게시물 파일 업로드")
 public class PostFileRestController {
 
     private final PostFileService postFileService;

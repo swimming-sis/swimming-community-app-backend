@@ -24,7 +24,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 @RequestMapping("/api/v1/posts")
 @RequiredArgsConstructor
-@Api(tags = "2. 게시판")
+@Api(tags = "02. 게시판")
 public class PostRestController {
     private final PostService postService;
 

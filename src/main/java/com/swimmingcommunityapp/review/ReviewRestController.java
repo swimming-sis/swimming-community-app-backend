@@ -18,7 +18,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequestMapping("/api/v1/swimmingPools")
 @RequiredArgsConstructor
 @Slf4j
-@Api(tags = "6. 리뷰")
+@Api(tags = "06. 리뷰")
 public class ReviewRestController {
 
     private final ReviewService reviewService;

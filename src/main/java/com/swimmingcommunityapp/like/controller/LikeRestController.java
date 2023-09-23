@@ -14,7 +14,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/posts")
 @Slf4j
-@Api(tags = "4. 좋아요")
+@Api(tags = "04. 좋아요")
 public class LikeRestController {
 
     private final LikeService likeService;

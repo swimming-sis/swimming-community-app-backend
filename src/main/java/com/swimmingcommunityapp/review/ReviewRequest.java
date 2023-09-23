@@ -14,4 +14,5 @@ import java.util.List;
 public class ReviewRequest {
     private String contents;
     private Long ratingStar;
+    private String tag;
 }

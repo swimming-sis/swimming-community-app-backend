@@ -18,7 +18,7 @@ import java.util.Date;
 @RestController
 @RequestMapping("/api/v1/logs")
 @RequiredArgsConstructor
-@Api(tags = "8. 일지")
+@Api(tags = "08. 일지")
 public class LogRestCotroller {
 
     private final LogService logService;

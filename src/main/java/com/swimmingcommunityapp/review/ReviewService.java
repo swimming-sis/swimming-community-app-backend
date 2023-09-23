@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -38,6 +39,7 @@ public class ReviewService {
                 .contents(dto.getContents())
                 .user(foundUser)
                 .swimmingPool(swimmingPool)
+                .tag(dto.getTag())
                 .build();
 
 
@@ -113,7 +115,6 @@ public class ReviewService {
                 .orElseThrow(() -> new AppException(ErrorCode.SWIMMINGPOOL_NOT_FOUND));
 
         Page<Review> reviews = reviewRepository.findBySwimmingPoolUniqueNumber(swimmingPool.getUniqueNumber(),pageable);
-
         Page<ReviewDto> reviewDto = ReviewDto.toDto(reviews);
         return reviewDto;
 

@@ -40,6 +40,7 @@ public class Review extends BaseEntity {
 
     private boolean deleted = false;
 
+    private String tag;
     public void updateReview(String contents,Long ratingStar){
         this.contents = contents;
         this.ratingStar = ratingStar;
