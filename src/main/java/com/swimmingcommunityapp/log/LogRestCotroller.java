@@ -53,7 +53,7 @@ public class LogRestCotroller {
 
     @GetMapping("/{date}")
     @Operation(summary = "날짜별 조회", description = "로그인 후, 날짜별 자신이 작성한 일지 조회")
-    public Response<Page<LogDto>> search(@PageableDefault(sort = "createdAt",size = 10,direction = Sort.Direction.DESC) Pageable pageable, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)Date date, @ApiIgnore Authentication authentication) {
+    public Response<Page<LogDto>> search(@PageableDefault(sort = "createdAt",size = 10,direction = Sort.Direction.DESC) Pageable pageable, @PathVariable String date, @ApiIgnore Authentication authentication) {
         return Response.success(logService.searchDateLog(date, authentication.getName(),pageable));
     }
 

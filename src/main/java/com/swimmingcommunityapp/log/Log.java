@@ -42,8 +42,7 @@ public class Log extends BaseEntity {
 
     private String contents;
 
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Asia/Seoul")
-    private Date date;
+    private String date;
 
     @Builder.Default
     private boolean deleted = false;

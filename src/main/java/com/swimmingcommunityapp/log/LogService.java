@@ -86,7 +86,7 @@ public class LogService {
         return logDto;
     }
 
-    public Page<LogDto> searchDateLog(Date date, String userName, Pageable pageable) {
+    public Page<LogDto> searchDateLog(String date, String userName, Pageable pageable) {
 
         //userName 정보를 못찾을때 에러처리
         User user = userRepository.findByUserName(userName)

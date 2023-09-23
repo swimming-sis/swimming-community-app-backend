@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Repository
 public interface LogRepository extends JpaRepository<Log, Long> {
-    Page<Log> findByDateAndUserId (Date date,Long userId, Pageable pageable);
+    Page<Log> findByDateAndUserId (String date,Long userId, Pageable pageable);
 
     Page<Log> findByUserId(Long userId, Pageable pageable);
 }

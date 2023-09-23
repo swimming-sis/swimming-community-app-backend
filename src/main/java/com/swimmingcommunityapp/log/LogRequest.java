@@ -17,8 +17,6 @@ public class LogRequest {
     private Long time;
     private Long calorie;
     private String contents;
-
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Asia/Seoul")
-    private Date date;
+    private String date;
 
 }
