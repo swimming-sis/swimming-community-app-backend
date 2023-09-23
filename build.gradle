@@ -1,7 +1,7 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '2.7.7'
-	id 'io.spring.dependency-management' version '1.1.0'
+    id 'java'
+    id 'org.springframework.boot' version '2.7.7'
+    id 'io.spring.dependency-management' version '1.1.0'
 }
 
 group = 'com'
@@ -9,58 +9,61 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
 
-	//템플릿 관련
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-devtools'
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-	implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-	implementation 'io.findify:s3mock_2.13:0.2.6'
+    //템플릿 관련
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-devtools'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+
+    //s3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation 'io.findify:s3mock_2.13:0.2.6'
 
     testImplementation 'org.projectlombok:lombok:1.18.22'
-	dependencies {
-		implementation 'org.springframework.boot:spring-boot-starter'
-		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-		implementation 'org.springframework.boot:spring-boot-starter-web'
-		implementation 'org.springframework.boot:spring-boot-starter-security'
-		implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
-		compileOnly 'org.projectlombok:lombok'
-		runtimeOnly 'com.mysql:mysql-connector-j'
-		annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-		annotationProcessor 'org.projectlombok:lombok'
-		testImplementation 'org.springframework.boot:spring-boot-starter-test'
-		testImplementation 'org.springframework.security:spring-security-test'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
 
-		//swagger
-		implementation "io.springfox:springfox-boot-starter:3.0.0"
-		implementation "io.springfox:springfox-swagger-ui:3.0.0"
+    //swagger
+    implementation "io.springfox:springfox-boot-starter:3.0.0"
+    implementation "io.springfox:springfox-swagger-ui:3.0.0"
 
-		//redis
-		implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	}
+    //redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-	tasks.named('test') {
-		useJUnitPlatform()
-	}
-
-	task copyPrivate(type: Copy) {
-		copy {
-			from './swimming-community-app-submodule'
-			include "application-dev.yml"
-			into 'src/main/resources'
-		}
-	}
-
+    //oauth2
+    implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: '5.6.3'
 }
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+task copyPrivate(type: Copy) {
+    copy {
+        from './swimming-community-app-submodule'
+        include "application-dev.yml"
+        into 'src/main/resources'
+    }
+}
+
