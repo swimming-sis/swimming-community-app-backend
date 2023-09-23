@@ -1,6 +1,7 @@
 package com.swimmingcommunityapp.user.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.swimmingcommunityapp.configuration.Token.TokenService;
 import com.swimmingcommunityapp.user.request.UserJoinRequest;
 import com.swimmingcommunityapp.user.request.UserModifyRequest;
 import com.swimmingcommunityapp.user.response.UserDto;
@@ -13,10 +14,13 @@ import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 import org.springframework.security.core.Authentication;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -30,6 +34,7 @@ import java.security.NoSuchAlgorithmException;
 public class UserRestController {
 
     private final UserService userService;
+    private final TokenService tokenService;
 
     //회원가입
     @Operation(summary = "회원가입", description = "sns을 이용하기 위한 회원 등록")
@@ -39,10 +44,26 @@ public class UserRestController {
     }
 
     //로그인
-    @Operation(summary = "로그인", description = "로그인 시 token 발행")
+    @Operation(summary = "일반 로그인", description = "로그인 시 token 발행")
     @PostMapping("/login")
     public Response<UserLoginResponse> login(@RequestBody UserLoginRequest dto){
         return Response.success(userService.login(dto));
+    }
+
+    //로그인
+    @Operation(summary = "자동 로그인", description = "로그인 시 token 발행")
+    @PostMapping("/autoLogin")
+    public Response<UserLoginResponse> autoLogin(@RequestBody UserLoginRequest dto){
+        return Response.success(userService.autoLogin(dto));
+    }
+    @Operation(summary = "로그아웃", description = "로그인 시 token 발행")
+    @PostMapping("/logout")
+    public Response<Void> logout(HttpServletRequest request, HttpServletResponse response,@ApiIgnore Authentication authentication,String accessToken){
+        if(authentication != null){
+            new SecurityContextLogoutHandler().logout(request,response,authentication);
+        }
+        tokenService.removeRefreshToken(accessToken);
+        return Response.success();
     }
 
     //userName 조회

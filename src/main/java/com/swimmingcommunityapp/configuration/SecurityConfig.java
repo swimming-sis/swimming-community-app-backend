@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/api/v1/users/phoneNumber/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/v1/users/**").permitAll()
-                .antMatchers("/api/v1/users/join","/api/v1/users/login","/api/v1/users/account/**").permitAll()
+                .antMatchers("/api/v1/users/join","/api/v1/users/login","/api/v1/users/autoLogin","/api/v1/users/account/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/**").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/v1/**").authenticated()
                 .antMatchers(HttpMethod.GET,"/api/v1/posts/my").authenticated()

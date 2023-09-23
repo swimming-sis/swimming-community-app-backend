@@ -4,10 +4,14 @@ package com.swimmingcommunityapp.utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 
+import java.time.Duration;
 import java.util.Date;
 
+
 public class JwtTokenUtil {
+
     public static Claims extractClaims(String token, String key){
         return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
     }
@@ -18,16 +22,26 @@ public class JwtTokenUtil {
         Date expireDate = extractClaims(token, secretKey).getExpiration();
         return expireDate.before(new Date());
     }
-    public static String createToken(String userName, String key, Long expireTimeMs){
-        Claims claims = Jwts.claims(); //일종의 map
-        claims.put("userName",userName);
 
+    public static String createAccessToken( String userName,String key) {
+        Date now = new Date();
+        Date expiration = new Date(now.getTime() + Duration.ofHours(2).toMillis());
         return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(new Date(System.currentTimeMillis())) //만든 날짜
-                .setExpiration(new Date(System.currentTimeMillis()+expireTimeMs))//끝나는 날짜
-                .signWith(SignatureAlgorithm.HS256,key)
+                .claim("userName", userName)
+                .setIssuedAt(now)
+                .setExpiration(expiration)
+                .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
-
     }
+    public static String createRefreshToken(String userName,String key) {
+        Date now = new Date();
+        Date expiration = new Date(now.getTime() + Duration.ofDays(30).toMillis());
+        return Jwts.builder()
+                .claim("userName", userName)
+                .setIssuedAt(now)
+                .setExpiration(expiration)
+                .signWith(SignatureAlgorithm.HS256, key)
+                .compact();
+    }
+
 }

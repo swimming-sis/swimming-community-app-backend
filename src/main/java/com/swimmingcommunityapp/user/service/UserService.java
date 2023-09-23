@@ -1,6 +1,7 @@
 package com.swimmingcommunityapp.user.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.swimmingcommunityapp.configuration.Token.TokenService;
 import com.swimmingcommunityapp.sms.MessageDto;
 import com.swimmingcommunityapp.sms.SmsService;
 import com.swimmingcommunityapp.user.request.UserJoinRequest;
@@ -35,10 +36,12 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
     private final SmsService smsService;
+    private final TokenService tokenService;
 
     @Value("${jwt.token.secret}")
     private String key;
-    private Long expireTimeMs = 1000 * 60 * 300l;
+
+
 
     public UserJoinResponse join(UserJoinRequest dto) {
 
@@ -78,11 +81,42 @@ public class UserService {
         }
 
         //토큰 발행
-        String token = JwtTokenUtil.createToken(selectedUser.getUserName(), key, expireTimeMs);
+        String token = JwtTokenUtil.createAccessToken(selectedUser.getUserName(), key);
 
         return new UserLoginResponse(token, selectedUser.getId(), selectedUser.getUserName(), selectedUser.getNickName(), selectedUser.getPhoneNumber());
 
     }
+
+    public UserLoginResponse autoLogin(UserLoginRequest dto) {
+        //username 없음
+        User selectedUser = userRepository.findByUserName(dto.getUserName())
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND));
+
+        //password 틀림
+        if (!encoder.matches(dto.getPassword(), selectedUser.getPassword())) {
+            throw new AppException(ErrorCode.INVALID_PASSWORD);
+        }
+
+        //access token 토큰 발행
+        String accessToken = JwtTokenUtil.createAccessToken(selectedUser.getUserName(), key);
+        String refreshToken = JwtTokenUtil.createRefreshToken(selectedUser.getUserName(), key);
+
+        //redis에 저장
+        tokenService.saveToken(dto.getUserName(),refreshToken,accessToken);
+
+        // 토큰 만료시, crate해서 로그인 유지
+        if (JwtTokenUtil.isExpired(accessToken,key)==false) {
+            return new UserLoginResponse(accessToken, selectedUser.getId(), selectedUser.getUserName(), selectedUser.getNickName(), selectedUser.getPhoneNumber());
+        } else if (JwtTokenUtil.isExpired(accessToken,key)==true) {
+            String newAccessToken = JwtTokenUtil.createAccessToken(selectedUser.getUserName(),key);
+            return new UserLoginResponse(newAccessToken, selectedUser.getId(), selectedUser.getUserName(), selectedUser.getNickName(), selectedUser.getPhoneNumber());
+        } else if (JwtTokenUtil.isExpired(refreshToken,key)==true) {
+            tokenService.removeRefreshToken(accessToken);
+        }
+        return null;
+    }
+
+
 
     public Boolean searchUserName(String userName)  {
         return userRepository.findByUserName(userName).isPresent();
@@ -96,6 +130,7 @@ public class UserService {
         return userRepository.findByPhoneNumber(phoneNumber).isPresent();
     }
 
+    //유저 조회
     public UserDto detailUser(String userName) {
         //username 없음
         User selectedUser = userRepository.findByUserName(userName)
@@ -105,6 +140,7 @@ public class UserService {
         return UserDto.detailUser(selectedUser);
     }
 
+    //유저 수정
     public UserDto modifyUser(UserModifyRequest dto, String userName) {
 
         //username 없음
@@ -119,6 +155,7 @@ public class UserService {
         return UserDto.detailUser(savedUser);
     }
 
+    //회원 탈퇴
     public Boolean deleteUser(String userName) {
 
         //username 없음
@@ -130,6 +167,7 @@ public class UserService {
         return true;
     }
 
+    //아이디 찾기
     public String findId(String phoneNumber) {
         //핸드폰 번호 등록되어있는지 확인
         User user = userRepository.findByPhoneNumber(phoneNumber)
@@ -138,6 +176,7 @@ public class UserService {
         return nameMasking(user.getUserName());
     }
 
+    //비밀번호 찾기
     public String findPassword(String userName, String phoneNumber) throws UnsupportedEncodingException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException {
         //아이디와 핸드폰번호가 일치하는 사용자 찾기
         User user = userRepository.findByPhoneNumberAndUserName(phoneNumber,userName)
