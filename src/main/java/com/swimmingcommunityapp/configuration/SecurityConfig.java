@@ -53,6 +53,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOrigin("http://localhost:3000");
+        corsConfiguration.addAllowedOrigin("https://upuhupuh.netlify.app");
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.addAllowedHeader("*");
 //        corsConfiguration.setAllowCredentials(true);
