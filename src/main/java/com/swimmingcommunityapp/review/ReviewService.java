@@ -79,7 +79,7 @@ public class ReviewService {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new AppException(ErrorCode.REVIEW_NOT_FOUND));
 
-        review.updateReview(dto.getContents(), dto.getRatingStar());
+        review.updateReview(dto.getContents(), dto.getRatingStar(),dto.getTag());
         Review savedReview = reviewRepository.save(review);
 
         return ReviewDto.of(savedReview);
